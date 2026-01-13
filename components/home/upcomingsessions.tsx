@@ -1,13 +1,21 @@
+"use client";
+
 import { CalendarPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 interface UpcomingSessionsProps {
   hasUpcomingSessions?: boolean;
 }
 
+
 export default function UpcomingSessions({
   hasUpcomingSessions = false,
 }: UpcomingSessionsProps) {
+  const router = useRouter();
+  const handleSchedule = () => {
+    router.push("/dashboard-user/booking");
+  };
   return (
     <div className="px-4 py-6">
       {/* Header */}
@@ -33,7 +41,7 @@ export default function UpcomingSessions({
           <p className="text-gray-500 text-sm mb-6">
             You haven't booked any sessions yet. Let's get moving!
           </p>
-          <Button className="w-full bg-[#1e3a8a] hover:bg-[#1e3a8a]/90 text-white py-6 rounded-2xl text-base font-semibold cursor-pointer">
+          <Button className="w-full bg-[#1e3a8a] hover:bg-[#1e3a8a]/90 text-white py-6 rounded-2xl text-base font-semibold cursor-pointer" onClick={handleSchedule}>
             Book Now
           </Button>
         </div>
