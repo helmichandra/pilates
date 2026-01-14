@@ -1,10 +1,21 @@
+"use client";
+
 import { Search, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export default function QuickActions() {
+  const router = useRouter();
+  const handleBooking = () => {
+    router.push("/dashboard-user/booking");
+  };
+  const handleProfile = () => {
+    router.push("/dashboard-user/profile");
+  };
   return (
-    <div className="px-4 py-6 grid grid-cols-2 gap-4 mb-12">
+    <div className="px-4 py-6 grid grid-cols-2 gap-4 mb-12">      
       <Button
+        onClick={handleBooking}
         variant="outline"
         className="flex flex-col items-center gap-2 h-auto py-6 border-2 border-gray-200 hover:border-[#1e3a8a] hover:bg-[#1e3a8a]/5 cursor-pointer"
       >
@@ -13,6 +24,7 @@ export default function QuickActions() {
       </Button>
 
       <Button
+        onClick={handleProfile}
         variant="outline"
         className="flex flex-col items-center gap-2 h-auto py-6 border-2 border-gray-200 hover:border-[#1e3a8a] hover:bg-[#1e3a8a]/5 cursor-pointer"
       >
