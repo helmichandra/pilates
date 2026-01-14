@@ -1,4 +1,7 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 interface UserStatsCardProps {
   userName?: string;
@@ -15,6 +18,10 @@ export default function UserStats({
   chairCount = 2,
   privateCount = 0,
 }: UserStatsCardProps) {
+  const router = useRouter();
+  const handleTopup = () => {
+    router.push("/dashboard-user/topup");
+  };
   return (
     <div className="bg-white rounded-2xl shadow-sm p-6 -mt-8 mx-4 relative z-20">
       {/* User Info */}
@@ -31,6 +38,7 @@ export default function UserStats({
           </div>
         </div>
         <Button
+          onClick={handleTopup}
           variant="link"
           className="text-[#1e3a8a] font-semibold text-sm"
         >
