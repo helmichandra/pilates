@@ -1,86 +1,66 @@
-interface Category {
-  icon: string;
-  title: string;
-  color: string;
-  iconColor: string;
-  description: string;
-  available: boolean;
-  label: string;
-}
 
-export const StudioCategories = () => {
-  const categories: Category[] = [
-    {
-      icon: '🔄',
-      title: 'Reformer',
-      color: 'bg-red-50',
-      iconColor: 'text-red-600',
-      description: 'Core-focused training to enhance flexibility and strength using professional reformer equipment',
-      available: true,
-      label: 'ACTIVE'
-    },
-    {
-      icon: '💺',
-      title: 'Chair',
-      color: 'bg-gray-100',
-      iconColor: 'text-gray-600',
-      description: 'Challenging workouts on the Pilates Wunda Chair to help you achieve active, precise technique',
-      available: false,
-      label: 'SOON'
-    },
-    {
-      icon: '👤',
-      title: 'Private',
-      color: 'bg-gray-100',
-      iconColor: 'text-gray-600',
-      description: 'Personalized 1-on-1 sessions tailored to your individual needs and goals',
-      available: false,
-      label: 'SOON'
-    },
-    {
-      icon: '🏊',
-      title: 'Swimming Pool',
-      color: 'bg-gray-100',
-      iconColor: 'text-gray-600',
-      description: 'Hydrotherapy and aqua fitness sessions in a premium private swimming pool',
-      available: false,
-      label: 'SOON'
-    }
-  ];
+import React from 'react';
+import { Category, ServiceItem } from '../types';
 
+const services: ServiceItem[] = [
+  { id: '1', name: Category.REFORMER, ready: true, description: 'Latihan inti kami. Meningkatkan fleksibilitas dan kekuatan menggunakan reformer profesional.' },
+  { id: '2', name: Category.CHAIR, ready: false, description: 'Latihan menantang pada Pilates Wunda Chair. Bagus untuk keseimbangan tubuh.' },
+  { id: '3', name: Category.PRIVATE, ready: false, description: 'Sesi 1-on-1 yang dirancang khusus untuk kebutuhan tubuh dan target spesifik Anda.' },
+  { id: '4', name: Category.POOL, ready: false, description: 'Hidroterapi dan aqua-based classes di fasilitas kolam renang privat premium.' },
+];
+
+
+const Services: React.FC = () => {
   return (
-    <section id="services" className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-4">STUDIO CATEGORIES</h2>
-          <div className="w-24 h-1 bg-red-600 mx-auto mb-4"></div>
-          <p className="text-gray-600 max-w-2xl mx-auto">Select the category that suits your health journey.</p>
+    <section id="services" className="py-24 bg-white">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-20">
+          <h2 className="text-4xl font-bold font-display text-gray-900 mb-4 tracking-tight uppercase">Studio Categories</h2>
+          <div className="h-1.5 w-24 bg-primary mx-auto rounded-full mb-6"></div>
+          <p className="text-gray-500 max-w-2xl mx-auto text-lg">Pilih kategori yang sesuai dengan perjalanan kesehatan Anda.</p>
         </div>
-        
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {categories.map((cat, idx) => (
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
+          {services.map((service) => (
             <div 
-              key={idx}
-              className="bg-white border-2 border-gray-100 rounded-2xl p-6 hover:shadow-2xl hover:border-red-200 transition-all duration-300 transform hover:-translate-y-2 opacity-0 animate-[fadeInUp_0.6s_ease-out_forwards] relative overflow-hidden group"
-              style={{ animationDelay: `${idx * 100}ms` }}
+              key={service.id} 
+              className={`group p-10 rounded-[2.5rem] border-2 transition-all duration-500 relative h-full flex flex-col ${
+                service.ready 
+                  ? 'border-gray-50 bg-white shadow-lg hover:shadow-2xl hover:border-primary/20 hover:-translate-y-2' 
+                  : 'border-gray-100 bg-gray-50/50 grayscale opacity-60'
+              }`}
             >
-              {cat.label && (
-                <span className={`absolute top-4 right-4 text-xs font-bold px-2 py-1 rounded ${cat.available ? 'bg-green-100 text-green-700' : 'bg-gray-200 text-gray-600'}`}>
-                  {cat.label}
+              <div className="mb-8 flex justify-between items-start">
+                <div className={`p-4 rounded-2xl ${service.ready ? 'bg-primary/10 text-primary' : 'bg-gray-200 text-gray-500'}`}>
+                   <span className="text-2xl">{service.name === Category.REFORMER ? '🧘' : service.name === Category.CHAIR ? '🪑' : service.name === Category.PRIVATE ? '👤' : '🏊'}</span>
+                </div>
+                <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest ${
+                  service.ready ? 'bg-green-100 text-green-700' : 'bg-gray-200 text-gray-400'
+                }`}>
+                  {service.ready ? 'Ready' : 'Soon'}
                 </span>
-              )}
-              <div className={`${cat.color} w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                {cat.icon}
               </div>
-              <h3 className="font-bold text-xl mb-3">{cat.title}</h3>
-              <p className="text-gray-600 text-sm mb-6 leading-relaxed">{cat.description}</p>
-              {cat.available ? (
-                <button className="text-red-600 font-bold text-sm hover:underline flex items-center gap-1 group-hover:gap-2 transition-all">
-                  Book Session <span>→</span>
-                </button>
-              ) : (
-                <span className="text-gray-400 text-sm font-semibold">Coming Soon</span>
-              )}
+              
+              <h3 className={`text-2xl font-bold mb-4 font-display ${service.ready ? 'text-gray-900' : 'text-gray-500'}`}>
+                {service.name}
+              </h3>
+              
+              <p className="text-gray-500 text-sm leading-relaxed mb-10 flex-grow">
+                {service.description}
+              </p>
+
+              <div className="mt-auto">
+                {service.ready ? (
+                  <a href="#booking" className="text-primary font-bold text-sm flex items-center group/link">
+                    Book Session
+                    <svg className="ml-2 w-4 h-4 transition-transform group-hover/link:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                    </svg>
+                  </a>
+                ) : (
+                  <span className="text-gray-400 font-bold text-sm italic">Coming Soon</span>
+                )}
+              </div>
             </div>
           ))}
         </div>
@@ -88,3 +68,5 @@ export const StudioCategories = () => {
     </section>
   );
 };
+
+export default Services;

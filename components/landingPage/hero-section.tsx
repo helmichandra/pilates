@@ -7,7 +7,7 @@ export default function Hero() {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="space-y-6 opacity-0 animate-[fadeInLeft_0.8s_ease-out_forwards]">
             <div className="inline-block">
-              <span className="text-xs text-red-600 font-semibold tracking-wide">⭐ JAKARTA'S BEST LOCAL EXPERTS</span>
+              <span className="text-xs text-red-600 font-semibold tracking-wide">Kreo • Ciledug • Joglo</span>
             </div>
             
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-tight">
@@ -45,15 +45,25 @@ export default function Hero() {
             </div>
           </div>
           
-          <div className="relative opacity-0 animate-[fadeInRight_0.8s_ease-out_forwards]">
-            <div className="bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-3xl p-8 sm:p-12 aspect-square flex items-end shadow-2xl transform hover:scale-[1.02] transition duration-500">
-              <div className="bg-white rounded-2xl p-6 w-full transform hover:-translate-y-2 transition duration-300">
-                <h3 className="font-bold text-xl mb-2">Expert Training</h3>
-                <p className="text-gray-600 text-sm">
-                    Private sessions with an immersive experience led by experienced local coaches.
-                </p>
+          <div className="relative group">
+            <div className="aspect-[4/5] bg-white p-4 rounded-[3.5rem] shadow-2xl relative overflow-hidden transition-transform duration-700 group-hover:scale-[1.01]">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent z-10"></div>
+              <img 
+                src="/media/landing-page/pilates-women.avif" 
+                alt="Fixclub Reformer Pilates" 
+                className="object-cover w-full h-full rounded-[3rem] transition-all duration-1000 group-hover:scale-110"
+              />
+              <div className="absolute bottom-10 left-10 right-10 z-20">
+                <div className="bg-white/90 backdrop-blur-xl p-8 rounded-3xl shadow-2xl border border-white/50">
+                  <p className="text-primary font-black text-[10px] uppercase tracking-widest mb-2">Exclusive Studio</p>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-1 font-display tracking-tight leading-none">Precise Movement</h3>
+                  <p className="text-gray-600 text-sm font-medium leading-relaxed mt-2">Dapatkan perhatian personal dari instruktur lokal tersertifikasi kami di Kreo.</p>
+                </div>
               </div>
             </div>
+            {/* Background elements */}
+            <div className="absolute -top-10 -right-10 w-64 h-64 bg-primary/5 rounded-full filter blur-3xl"></div>
+            <div className="absolute -bottom-10 -left-10 w-64 h-64 bg-secondary/10 rounded-full filter blur-3xl"></div>
           </div>
         </div>
       </div>
