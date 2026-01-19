@@ -1,73 +1,56 @@
-export default function Footer() {
+import { MapPin, Phone, Mail, Instagram } from 'lucide-react';
+export const Footer = () => {
     return (
-      <footer className="bg-[#191A1E] text-white py-12">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
-            <div className="animate-fade-in">
-              <h4 className="text-2xl font-bold text-[#E7E5DB] italic mb-4">
-                FIX Padel
-              </h4>
-              <p className="text-[#AD9E89]">
-                Premium padel courts for passionate players.
+      <footer className="bg-gray-900 text-white py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-12 mb-8">
+            <div>
+              <h3 className="text-2xl font-black mb-4 text-red-500">Fixclub.</h3>
+              <p className="text-gray-400 text-sm leading-relaxed">
+                A boutique wellness studio focused on posture correction and physical empowerment through specialized movement.
               </p>
-            </div>
-            <div className="animate-fade-in" style={{ animationDelay: "100ms" }}>
-              <h5 className="font-bold mb-4 text-[#E7E5DB]">Quick Links</h5>
-              <div className="space-y-2 text-[#AD9E89]">
-                <div>
-                  <a
-                    href="#"
-                    className="hover:text-[#E7E5DB] transition-colors duration-300"
-                  >
-                    About Us
-                  </a>
-                </div>
-                <div>
-                  <a
-                    href="#"
-                    className="hover:text-[#E7E5DB] transition-colors duration-300"
-                  >
-                    Courts
-                  </a>
-                </div>
-                <div>
-                  <a
-                    href="#"
-                    className="hover:text-[#E7E5DB] transition-colors duration-300"
-                  >
-                    Pricing
-                  </a>
-                </div>
-                <div>
-                  <a
-                    href="#"
-                    className="hover:text-[#E7E5DB] transition-colors duration-300"
-                  >
-                    Contact
-                  </a>
-                </div>
+              <div className="mt-6">
+                <a href="#" className="inline-block hover:opacity-80 transition">
+                  <Instagram size={24} />
+                </a>
               </div>
             </div>
-            <div className="animate-fade-in" style={{ animationDelay: "200ms" }}>
-              <h5 className="font-bold mb-4 text-[#E7E5DB]">Contact</h5>
-              <div className="space-y-2 text-[#AD9E89]">
-                <div>Jakarta, Indonesia</div>
-                <div>+62 123 456 7890</div>
-                <div>info@fixpadel.com</div>
-              </div>
+            
+            <div>
+              <h4 className="font-bold mb-4 text-red-500 text-sm uppercase tracking-wide">Quick Links</h4>
+              <ul className="space-y-2 text-sm">
+                <li><a href="#home" className="text-gray-400 hover:text-white transition">Home</a></li>
+                <li><a href="#services" className="text-gray-400 hover:text-white transition">Services</a></li>
+                <li><a href="#facility" className="text-gray-400 hover:text-white transition">Facility</a></li>
+                <li><a href="#booking" className="text-gray-400 hover:text-white transition">Booking</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-white transition">Privacy Policy</a></li>
+              </ul>
             </div>
-            <div className="animate-fade-in" style={{ animationDelay: "300ms" }}>
-              <h5 className="font-bold mb-4 text-[#E7E5DB]">Hours</h5>
-              <div className="space-y-2 text-[#AD9E89]">
-                <div>Mon - Fri: 6AM - 10PM</div>
-                <div>Sat - Sun: 7AM - 11PM</div>
-              </div>
+            
+            <div>
+              <h4 className="font-bold mb-4 text-red-500 text-sm uppercase tracking-wide">Contact Us</h4>
+              <ul className="space-y-3 text-sm">
+                <li className="flex items-start gap-3">
+                  <MapPin size={18} className="flex-shrink-0 mt-0.5 text-red-500" />
+                  <span className="text-gray-400">Sudirman District, Jakarta Selatan 12190, Indonesia</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <Phone size={18} className="text-red-500" />
+                  <span className="text-gray-400">+62 812 3456 7890</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <Mail size={18} className="text-red-500" />
+                  <span className="text-gray-400">hello@fixclub.id</span>
+                </li>
+              </ul>
             </div>
           </div>
-          <div className="border-t border-[#564838] pt-8 text-center text-[#AD9E89]">
-            <p>© 2026 FravoxLabs. All rights reserved.</p>
+          
+          <div className="border-t border-gray-800 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-gray-500">
+            <p>© 2025 Fixclub Studio. All rights reserved.</p>
+            <p>Design for Wellness Registration Purpose</p>
           </div>
         </div>
       </footer>
     );
-  }
+  };
