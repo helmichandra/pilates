@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import TopUpHeader from "@/components/topup/header";
-import CategoryTabs from "@/components/topup/category";
-import CreditPackageList from "@/components/topup/creditlist";
+import TopUpHeader from "@/components/user/topup/header";
+import CategoryTabs from "@/components/user/topup/category";
+import CreditPackageList from "@/components/user/topup/creditlist";
 
 export default function TopUpPage() {
     const [selectedCategory, setSelectedCategory] = useState("reformer");

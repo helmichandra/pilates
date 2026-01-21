@@ -18,7 +18,8 @@ const nextConfig: NextConfig = {
   },
   async rewrites() {
     return [
-      { source: "/api/login",                 destination: `${base}/auth/login` },     
+      { source: "/api/login",                 destination: `${base}/auth/login` },  
+      { source: "/api/register",              destination: `${base}/auth/register` },     
     ];
   },
 };

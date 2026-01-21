@@ -1,5 +1,5 @@
-import Header from "@/components/user/navbar";
-import BottomBar from "@/components/user/bottombar";
+import Header from "@/components/admin/navbar";
+import BottomBar from '@/components/admin/bottomnav';
 
 export default function DashboardLayout({
   children,

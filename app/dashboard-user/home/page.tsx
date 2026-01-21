@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import HomePage from "@/components/home/home-page";
+import HomePage from "@/components/user/home/home-page";
 import { jwtDecode } from 'jwt-decode';
 import { toast } from 'sonner';
 import { useRouter } from "next/navigation";

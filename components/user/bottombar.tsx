@@ -46,23 +46,24 @@ export default function BottomBar() {
                 variant="ghost"
                 size="icon"
                 className={`h-10 w-10 transition-colors ${
-                  isActive
-                    ? "text-[#1e3a8a] bg-[#1e3a8a]/10"
-                    : "text-gray-500 hover:text-[#1e3a8a] hover:bg-[#1e3a8a]/5"
+                    isActive
+                    ? "text-red-600 bg-red-600/10"
+                    : "text-gray-500 hover:text-red-600 hover:bg-red-600/5"
                 } cursor-pointer`}
-              >
+                >
                 <Icon className="h-5 w-5" />
-              </Button>
+                </Button>
 
-              <span
+                <span
                 className={`text-xs ${
-                  isActive
-                    ? "text-[#1e3a8a] font-medium"
+                    isActive
+                    ? "text-red-600 font-medium"
                     : "text-gray-500"
                 }`}
-              >
+                >
                 {item.name}
-              </span>
+                </span>
+
             </Link>
           );
         })}

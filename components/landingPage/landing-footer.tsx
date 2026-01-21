@@ -31,7 +31,7 @@ const Footer: React.FC = () => {
                 <span className="text-white block font-bold mb-1">Kreo - Larangan Area</span>
                 Jl. AMD X No.35, Kreo, Kec. Larangan, <br/>Kota Tangerang, Banten 15516
               </li>
-              <li className="text-white font-bold tracking-widest">+62 812 3456 7890</li>
+              <li className="text-white font-bold tracking-widest">+62 819 1800 7016</li>
               <li className="text-primary font-bold">hello@fixclub.id</li>
             </ul>
           </div>

@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import DateSelector from "@/components/booking/dateselector";
-import FilterSection from "@/components/booking/filtersection";
-import ClassList from "@/components/booking/classlist";
+import DateSelector from "@/components/user/booking/dateselector";
+import FilterSection from "@/components/user/booking/filtersection";
+import ClassList from "@/components/user/booking/classlist";
 
 // Mock data
 const mockClasses = [

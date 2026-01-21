@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import BookingCard from "@/components/savedbooking/bookingcard";
-import { BookingCardSkeleton } from "@/components/savedbooking/bookingcardskeleton";
-import EmptyState from "@/components/savedbooking/emptystate";
-import BookingTabs from "@/components/savedbooking/bookingtabs";
+import BookingCard from "@/components/user/savedbooking/bookingcard";
+import { BookingCardSkeleton } from "@/components/user/savedbooking/bookingcardskeleton";
+import EmptyState from "@/components/user/savedbooking/emptystate";
+import BookingTabs from "@/components/user/savedbooking/bookingtabs";
 
 // Mock data
 const mockBookings = [
