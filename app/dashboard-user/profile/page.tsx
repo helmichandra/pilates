@@ -1,8 +1,8 @@
 
-import ProfileHeader from "@/components/profile/header";
-import CreditCards from "@/components/profile/creditcard";
-import SettingsMenu from "@/components/profile/settingsmenu";
-import TopUpHistory from "@/components/profile/topuphistory";
+import ProfileHeader from "@/components/user/profile/header";
+import CreditCards from "@/components/user/profile/creditcard";
+import SettingsMenu from "@/components/user/profile/settingsmenu";
+import TopUpHistory from "@/components/user/profile/topuphistory";
 
 export default function ProfilePage() {
   return (
