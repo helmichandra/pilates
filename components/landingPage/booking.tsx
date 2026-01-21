@@ -1,6 +1,7 @@
 "use client";
 import { useState } from 'react';
 import { Calendar, Clock, ChevronDown } from 'lucide-react';
+import { useRouter } from 'next/navigation'
 
 interface Package {
   sessions: number;
@@ -13,7 +14,18 @@ interface Package {
 export const BookingSection = () => {
   const [date, setDate] = useState('dd/mm/yyyy');
   const [time, setTime] = useState('08:00 AM');
-
+  const router = useRouter()
+  const handleRegister = () => {
+    router.push("/auth/register");
+  };
+  const handleBooking = () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.push('/auth/login?callback=/dashboard-user/booking');
+    } else {
+      router.push('/dashboard-user/booking');
+    }
+  };
   const packages: Package[] = [
     { sessions: 1, price: 'Rp 180,000', label: 'SESSION' },
     { sessions: 5, price: 'Rp 800,000', label: 'SESSIONS', save: 'Rp 100,000', popular: true },
@@ -69,7 +81,9 @@ export const BookingSection = () => {
                 </div>
               </div>
               
-              <button className="w-full bg-red-600 text-white py-4 rounded-lg font-bold hover:bg-red-700 transition transform hover:scale-105 shadow-lg">
+              <button 
+                onClick={handleBooking}
+                className="w-full bg-red-600 text-white py-4 rounded-lg font-bold hover:bg-red-700 transition transform hover:scale-105 shadow-lg cursor-pointer">
                 Continue to Booking
               </button>
               
@@ -124,7 +138,9 @@ export const BookingSection = () => {
               <p className="text-red-100 mb-6 text-sm">
                 Sign up now to receive class notifications and track your progress.
               </p>
-              <button className="w-full bg-white text-red-900 py-3 rounded-lg font-bold hover:bg-gray-100 transition transform hover:scale-105">
+              <button 
+                onClick={handleRegister}
+                className="w-full bg-white text-red-900 py-3 rounded-lg font-bold hover:bg-gray-100 transition transform hover:scale-105 cursor-pointer">
                 Create Account
               </button>
             </div>
