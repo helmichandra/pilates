@@ -97,8 +97,8 @@ export default function MyBookingsPage() {
       {/* Page Header */}
       <div className="bg-white border-b">
         <div className="max-w-6xl mx-auto px-4 py-6">
-          <h1 className="text-2xl md:text-3xl font-bold text-[#1e3a8a] italic flex items-center gap-2">
-            <div className="w-1 h-8 bg-[#1e3a8a] rounded-full"></div>
+          <h1 className="text-2xl md:text-3xl font-bold text-[#640D14] italic flex items-center gap-2">
+            <div className="w-1 h-8 bg-[#640D14] rounded-full"></div>
             My Bookings
           </h1>
         </div>

@@ -6,9 +6,9 @@ import { Label } from "@/components/ui/label"
 import { useState } from "react"
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { Eye, EyeOff, ArrowRight } from "lucide-react"
+import { Eye, EyeOff, ArrowRight, CheckCircle2, Loader2 } from "lucide-react" // Tambah ikon
 import Link from "next/link"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion" // Tambah AnimatePresence
 
 interface TokenData {
   id: string;
@@ -17,14 +17,15 @@ interface TokenData {
   role: string;
   exp: number;
 }
+
 export default function SignInForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false) // State baru untuk sukses
   const router = useRouter()
-
 
   const decodeToken = (token: string): TokenData | null => {
     try {
@@ -50,7 +51,6 @@ export default function SignInForm() {
       localStorage.setItem("userData", JSON.stringify(userData));
     }
   };
-  
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -64,25 +64,64 @@ export default function SignInForm() {
       });
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       const result = await response.json();
+      
       if (result.data?.token) {
         storeToken(result.data.token);
-        router.push("/dashboard-user/home");
+        setIsSuccess(true); // Aktifkan animasi sukses
+        
+        // Delay 1.5 detik untuk animasi sebelum pindah halaman
+        setTimeout(() => {
+          router.push("/dashboard-user/home");
+        }, 1500);
       } else {
         throw new Error("Token not received");
       }
     } catch (err) {
-      setError("Gagal login. Silakan coba lagi.");
-    } finally {
+      setError("Gagal login. Silakan cek kembali kredensial Anda.");
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-[#FDF8F8] p-4 md:p-8">
+    <div className="flex items-center justify-center min-h-screen bg-[#FDF8F8] p-4 md:p-8 relative overflow-hidden">
+      
+      {/* ANIMASI OVERLAY SUKSES */}
+      <AnimatePresence>
+        {isSuccess && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="fixed inset-0 z-[100] bg-gradient-to-br from-[#640D14] to-[#38040E] flex flex-col items-center justify-center text-white"
+          >
+            <motion.div
+              initial={{ scale: 0.5, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ type: "spring", damping: 12 }}
+              className="flex flex-col items-center"
+            >
+              <div className="bg-white/10 p-6 rounded-full mb-6 backdrop-blur-md">
+                <CheckCircle2 className="w-16 h-16 text-white" />
+              </div>
+              <h2 className="text-3xl font-black mb-2">Login Successful!</h2>
+              <p className="text-white/60 font-medium">Redirecting to your dashboard...</p>
+              
+              <motion.div 
+                initial={{ width: 0 }}
+                animate={{ width: "100%" }}
+                transition={{ duration: 1.5 }}
+                className="h-1 bg-white/30 w-48 mt-8 rounded-full overflow-hidden"
+              >
+                <div className="h-full bg-white w-full" />
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Container Utama */}
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        animate={{ opacity: isSuccess ? 0 : 1, y: isSuccess ? -20 : 0 }} // Menghilang saat sukses
         className="w-full max-w-5xl bg-white rounded-[2.5rem] shadow-[0_20px_60px_rgba(100,13,20,0.1)] overflow-hidden flex flex-col md:flex-row min-h-[650px] border border-gray-100"
       >
         
@@ -95,10 +134,8 @@ export default function SignInForm() {
             className="object-cover scale-110"
             priority
           />            
-          {/* Overlay Marun Elegan */}
           <div className="absolute inset-0 bg-gradient-to-tr from-[#640D14]/90 via-[#640D14]/40 to-transparent"></div>
           
-          {/* Content Over Image */}
           <div className="absolute bottom-12 left-12 right-12 text-white hidden md:block">
             <h2 className="text-4xl font-black mb-4 leading-tight">Elevate Your <br/>Pilates Journey.</h2>
             <p className="text-white/80 font-medium">Join the most exclusive studio experience in the city.</p>
@@ -108,7 +145,6 @@ export default function SignInForm() {
         {/* SISI KANAN: Form */}
         <div className="w-full md:w-1/2 flex flex-col items-center justify-center p-8 md:p-16 relative">
           
-          {/* Logo Brand */}
           <div className="mb-12">
             <motion.div 
               whileHover={{ scale: 1.05 }}
@@ -122,7 +158,6 @@ export default function SignInForm() {
                 priority
               />
             </motion.div>
-            {/* Opsional: Tambahkan teks di bawah logo jika logo hanya berupa simbol */}
             <div className="mt-3 text-center">
               <span className="text-xl font-black tracking-tighter text-[#38040E]">
                 FIXCLUB<span className="text-[#640D14]">.</span>
@@ -142,6 +177,7 @@ export default function SignInForm() {
                 <Input 
                   id="username" 
                   type="text" 
+                  required
                   placeholder="Enter your email" 
                   className="h-14 px-5 bg-gray-50 border-gray-100 rounded-2xl focus:ring-[#640D14] focus:border-[#640D14] transition-all"
                   value={username}
@@ -158,6 +194,7 @@ export default function SignInForm() {
                   <Input
                     id="password"
                     type={showPassword ? "text" : "password"}
+                    required
                     placeholder="••••••••"
                     className="h-14 px-5 bg-gray-50 border-gray-100 rounded-2xl focus:ring-[#640D14] focus:border-[#640D14] transition-all"
                     value={password}
@@ -174,7 +211,7 @@ export default function SignInForm() {
               </div>
 
               {error && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-red-600 text-xs font-bold bg-red-50 p-3 rounded-xl border border-red-100 text-center">
+                <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} className="text-red-600 text-xs font-bold bg-red-50 p-3 rounded-xl border border-red-100 text-center">
                   {error}
                 </motion.div>
               )}
@@ -182,18 +219,17 @@ export default function SignInForm() {
               <Button 
                 type="submit" 
                 className="w-full h-14 bg-gradient-to-r from-[#640D14] to-[#800E13] hover:opacity-90 text-white text-lg font-bold rounded-2xl transition-all shadow-lg shadow-[#640D14]/20 active:scale-[0.98] cursor-pointer"
-                disabled={isLoading}
+                disabled={isLoading || isSuccess}
               >
                 {isLoading ? (
                   <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <Loader2 className="w-5 h-5 animate-spin" />
                     Memproses...
                   </div>
                 ) : "Sign In"}
               </Button>
             </form>
 
-            {/* REGISTER SECTION */}
             <div className="mt-10 pt-8 border-t border-gray-100 text-center">
               <p className="text-sm text-gray-500 mb-4">Belum punya akun?</p>
               <Link href="/auth/register">

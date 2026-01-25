@@ -1,40 +1,39 @@
 "use client";
-
 import { useState } from "react";
+import { motion } from "framer-motion";
 
-interface CategoryTabsProps {
-  onCategoryChange: (category: string) => void;
-}
-
-export default function CategoryTabs({ onCategoryChange }: CategoryTabsProps) {
+export default function CategoryTabs({ onCategoryChange }: any) {
   const [activeCategory, setActiveCategory] = useState("reformer");
-
   const categories = [
     { id: "reformer", label: "Reformer" },
     { id: "chair", label: "Chair" },
     { id: "private", label: "Private" },
   ];
 
-  const handleCategoryClick = (categoryId: string) => {
-    setActiveCategory(categoryId);
-    onCategoryChange(categoryId);
+  const handleCategoryClick = (id: string) => {
+    setActiveCategory(id);
+    onCategoryChange(id);
   };
 
   return (
-    <div className="bg-white border-b">
-      <div className="max-w-6xl mx-auto px-4">
-        <div className="grid grid-cols-3 gap-2 md:gap-4 -mb-px">
-          {categories.map((category) => (
+    <div className="bg-white border-b sticky top-0 z-30">
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="grid grid-cols-3 gap-0">
+          {categories.map((cat) => (
             <button
-              key={category.id}
-              onClick={() => handleCategoryClick(category.id)}
-              className={`py-4 text-sm md:text-base font-semibold transition-all ${
-                activeCategory === category.id
-                  ? "text-[#1e3a8a] border-b-2 border-[#1e3a8a]"
-                  : "text-gray-400 hover:text-gray-600"
+              key={cat.id}
+              onClick={() => handleCategoryClick(cat.id)}
+              className={`relative py-5 text-xs md:text-sm font-black uppercase tracking-widest transition-all cursor-pointer ${
+                activeCategory === cat.id ? "text-[#640D14]" : "text-gray-400"
               }`}
             >
-              {category.label}
+              {cat.label}
+              {activeCategory === cat.id && (
+                <motion.div
+                  layoutId="activeCategoryUnderline"
+                  className="absolute bottom-0 left-0 right-0 h-1 bg-[#640D14] rounded-t-full"
+                />
+              )}
             </button>
           ))}
         </div>

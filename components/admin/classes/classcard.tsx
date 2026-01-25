@@ -1,83 +1,68 @@
-"use client";
+import { Edit, Trash2, MapPin, Clock, Users } from "lucide-react";
 
-import React from 'react';
-import { Clock, Edit2, Trash2 } from 'lucide-react';
-
-interface ClassProps {
-  schedule: {
-    title: string;
-    time: string;
-    duration: string;
-    days: string[];
-    coach: string;
-    room: string;
-    status: string;
+export const ClassCard = ({ item, onEdit, onDelete }: any) => {
+  // Format waktu dari ISO string (08:00:00Z) ke 08:00
+  const formatTime = (isoString: string) => {
+    return new Date(isoString).toLocaleTimeString("id-ID", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
   };
-  onEdit: () => void;
-  onDelete: () => void;
-}
 
-export default function ClassCard({ schedule, onEdit, onDelete }: ClassProps) {
-  const allDays = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
+  const dayLabel = new Date(item.date).toLocaleDateString("id-ID", { weekday: "short" });
 
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-4">
-      <div className="flex justify-between items-start mb-2">
-        {/* Menggunakan warna teks gelap yang sama dengan Users Page */}
-        <h3 className="text-xl font-bold text-[#38040E] uppercase tracking-tight">{schedule.title}</h3>
-        <span className="px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full">
-          {schedule.status}
-        </span>
-      </div>
-
-      <div className="flex items-center gap-2 text-gray-500 text-sm mb-4 font-medium">
-        <Clock className="w-4 h-4 text-[#640D14]" />
-        <span>{schedule.time} ({schedule.duration})</span>
-      </div>
-
-      {/* Days Row - Warna Biru Muda diganti ke Merah Muda/Netral agar selaras */}
-      <div className="flex flex-wrap gap-2 mb-6">
-        {allDays.map((day) => (
-          <div
-            key={day}
-            className={`px-3 py-1 rounded-lg text-xs font-bold border transition-colors ${
-              schedule.days.includes(day)
-                ? "bg-[#640D14] border-[#640D14] text-white" // Hari aktif mengikuti warna brand
-                : "bg-gray-50 border-gray-200 text-gray-300"
-            }`}
-          >
-            {day}
+    <div className="bg-white rounded-[2rem] p-6 shadow-sm border border-gray-100">
+      <div className="flex justify-between items-start mb-4">
+        <div className="flex-1">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="bg-[#640D14]/10 text-[#640D14] text-[10px] font-black px-2 py-0.5 rounded-md uppercase tracking-tighter">
+              {item.class_level}
+            </span>
+            <span className="text-gray-400 text-[10px] font-bold uppercase">{item.class_type}</span>
           </div>
-        ))}
-      </div>
-
-      {/* Details Box */}
-      <div className="bg-gray-50 rounded-xl p-4 flex justify-between mb-4 border border-gray-100">
-        <div>
-          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Coach</p>
-          <p className="text-sm font-bold text-[#38040E]">{schedule.coach}</p>
+          <h3 className="text-lg font-black text-[#38040E] leading-tight uppercase truncate">
+            {item.pilates_name}
+          </h3>
         </div>
-        <div className="text-right">
-          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Room</p>
-          <p className="text-sm font-bold text-[#38040E]">{schedule.room}</p>
+        <div className="bg-[#640D14] text-white w-10 h-10 rounded-xl flex items-center justify-center font-bold text-xs">
+          {dayLabel}
         </div>
       </div>
 
-      {/* Actions */}
-      <div className="flex justify-end gap-2 pt-2">
-        <button 
-          onClick={onEdit}
-          className="flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-lg text-sm font-bold text-[#38040E] hover:bg-gray-50 transition-all cursor-pointer"
-        >
-          <Edit2 className="w-4 h-4" /> Edit Details
-        </button>
-        <button 
-          onClick={onDelete}
-          className="p-2 bg-red-50 text-red-500 rounded-lg hover:bg-red-100 border border-red-100 transition-colors cursor-pointer"
-        >
-          <Trash2 className="w-5 h-5" />
-        </button>
+      <div className="flex items-center gap-4 mb-6 text-gray-500">
+        <div className="flex items-center gap-1.5 text-xs font-semibold">
+          <Clock size={14} className="text-[#640D14]" />
+          {formatTime(item.start_time)}
+        </div>
+        <div className="flex items-center gap-1.5 text-xs font-semibold">
+          <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
+          {item.duration_minutes} Mins
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3 mb-6">
+        <div className="bg-gray-50 p-3 rounded-2xl border border-gray-100">
+          <p className="text-[9px] font-black text-gray-400 uppercase mb-1">Coach</p>
+          <p className="text-xs font-bold text-[#38040E] truncate">{item.coach_name}</p>
+        </div>
+        <div className="bg-gray-50 p-3 rounded-2xl border border-gray-100">
+          <p className="text-[9px] font-black text-gray-400 uppercase mb-1">Room</p>
+          <p className="text-xs font-bold text-[#38040E] truncate">{item.class_room}</p>
+        </div>
+      </div>
+
+      <div className="flex justify-between items-center pt-4 border-t border-dashed border-gray-100">
+        <div className="flex items-center gap-1.5 text-xs font-bold text-gray-500">
+          <Users size={14} className="text-gray-400" />
+          Quota: <span className="text-[#38040E]">{item.quota}</span>
+        </div>
+        <div className="flex gap-1">
+          <button onClick={onEdit} className="p-2 hover:bg-gray-100 rounded-xl text-gray-400"><Edit size={18} /></button>
+          <button onClick={onDelete} className="p-2 hover:bg-red-50 rounded-xl text-red-400"><Trash2 size={18} /></button>
+        </div>
       </div>
     </div>
   );
-}
+};

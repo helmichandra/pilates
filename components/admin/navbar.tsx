@@ -17,7 +17,6 @@ export default function Navbar() {
                 className="object-cover"
               />
             </div>
-            <h1 className="text-xl font-bold text-[#38040E]">Fix Pilates</h1>
           </div>
           <button className="w-10 h-10 bg-gradient-to-br from-[#250902] to-[#38040E] rounded-full flex items-center justify-center cursor-pointer">
             <User className="w-5 h-5 text-white" />

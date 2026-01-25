@@ -1,107 +1,63 @@
-import { MapPin, User, Info } from "lucide-react";
+"use client";
+import { MapPin, User, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 
-interface ClassCardProps {
-  time: string;
-  duration: string;
-  title: string;
-  type: "reformer" | "chair" | "private";
-  credit: number;
-  level: string;
-  coach: string;
-  location: string;
-  spotsLeft: number;
-  status?: "passed" | "available";
-  onBook?: () => void;
-}
-
-export default function ClassCard({
-  time,
-  duration,
-  title,
-  type,
-  credit,
-  level,
-  coach,
-  location,
-  spotsLeft,
-  status = "available",
-  onBook,
-}: ClassCardProps) {
-  const typeColors = {
-    reformer: "bg-blue-100 text-blue-700",
-    chair: "bg-orange-100 text-orange-700",
-    private: "bg-purple-100 text-purple-700",
-  };
-
-  const typeLabels = {
-    reformer: "REFORMER CLASS",
-    chair: "CHAIR CLASS",
-    private: "PRIVATE CLASS",
+export default function ClassCard({ time, duration, title, type, credit, level, coach, location, spotsLeft, status = "available", onBook }: any) {
+  const typeBadge = {
+    reformer: "bg-[#640D14]/10 text-[#640D14]",
+    chair: "bg-orange-50 text-orange-700",
+    private: "bg-purple-50 text-purple-700",
   };
 
   return (
-    <div className="bg-white border-2 border-gray-200 rounded-xl p-6 hover:border-[#1e3a8a] transition-all">
-      {/* Time and Duration */}
-      <div className="flex items-center gap-2 mb-3">
-        <span className="text-2xl font-bold text-[#1e3a8a]">{time}</span>
-        <span className="text-gray-400">|</span>
-        <span className="text-sm text-gray-500">{duration}</span>
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="bg-white border-2 border-gray-100 rounded-[2rem] p-6 hover:border-[#640D14]/20 transition-all shadow-sm group"
+    >
+      <div className="flex justify-between items-start mb-4">
+        <div className="flex items-center gap-3">
+          <div className="bg-[#640D14]/5 p-3 rounded-2xl group-hover:bg-[#640D14] transition-colors duration-500">
+            <Clock className="w-5 h-5 text-[#640D14] group-hover:text-white" />
+          </div>
+          <div>
+            <span className="text-2xl font-black text-[#38040E] block tracking-tighter">{time}</span>
+            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{duration}</span>
+          </div>
+        </div>
+        {status === "passed" && <span className="text-[10px] font-black text-gray-300 border border-gray-200 px-3 py-1 rounded-full">PASSED</span>}
       </div>
 
-      {/* Title and Info Icon */}
-      <div className="flex items-start justify-between mb-3">
-        <h3 className="text-xl font-bold text-[#1e3a8a] flex items-center gap-2">
-          {title}
-          <Info className="w-4 h-4 text-gray-400" />
-        </h3>
-        {status === "passed" && (
-          <span className="text-sm text-gray-400 font-semibold">PASSED</span>
-        )}
-      </div>
+      <h3 className="text-xl font-black text-[#38040E] mb-4 uppercase tracking-tight">{title}</h3>
 
-      {/* Tags */}
-      <div className="flex flex-wrap gap-2 mb-4">
-        <span className={`text-xs font-bold px-3 py-1 rounded-full ${typeColors[type]}`}>
-          {typeLabels[type]}
+      <div className="flex flex-wrap gap-2 mb-6">
+        <span className={`text-[9px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest ${typeBadge[type as keyof typeof typeBadge]}`}>
+          {type} CLASS
         </span>
-        <span className="text-xs font-bold px-3 py-1 rounded-full bg-yellow-100 text-yellow-700">
-          💳 {credit} CREDIT
-        </span>
-        <span className="text-xs font-bold px-3 py-1 rounded-full bg-blue-100 text-blue-700">
-          {level.toUpperCase()}
+        <span className="text-[9px] font-black px-4 py-1.5 rounded-full bg-yellow-50 text-yellow-700 uppercase tracking-widest">
+          💳 {credit} CREDITS
         </span>
       </div>
 
-      {/* Coach and Location */}
-      <div className="space-y-2 mb-4">
-        <div className="flex items-center gap-2 text-sm text-gray-600">
-          <User className="w-4 h-4" />
-          <span>Coach {coach}</span>
+      <div className="grid grid-cols-2 gap-4 mb-6 pt-4 border-t border-gray-50">
+        <div className="flex items-center gap-2 text-xs font-bold text-gray-500">
+          <User size={14} className="text-[#640D14]" /> <span>Coach {coach}</span>
         </div>
-        <div className="flex items-center gap-2 text-sm text-gray-600">
-          <MapPin className="w-4 h-4" />
-          <span>{location}</span>
+        <div className="flex items-center gap-2 text-xs font-bold text-gray-500">
+          <MapPin size={14} className="text-[#640D14]" /> <span className="truncate">{location}</span>
         </div>
       </div>
 
-      {/* Footer */}
-      <div className="flex items-center justify-between pt-4 border-t">
-        <div>
-          <button className="text-[#1e3a8a] font-semibold text-sm hover:underline">
-            View Booking Details
-          </button>
-          <p className="text-sm text-gray-500 mt-1">{spotsLeft} left</p>
-        </div>
+      <div className="flex items-center justify-between">
+        <p className="text-xs font-black text-[#640D14] uppercase tracking-widest">{spotsLeft} Spots Left</p>
         {status === "available" && (
-          <Button
-            onClick={onBook}
-            className="bg-[#1e3a8a] hover:bg-[#1e3a8a]/90 text-white px-8 h-10 rounded-full font-semibold cursor-pointer"
-          >
-            BOOK
+          <Button onClick={onBook} className="bg-[#640D14] hover:bg-[#38040E] text-white px-8 h-12 rounded-2xl font-black uppercase tracking-widest shadow-lg active:scale-95 transition-all">
+            BOOK NOW
           </Button>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }

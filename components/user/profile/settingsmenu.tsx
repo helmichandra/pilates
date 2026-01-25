@@ -1,33 +1,21 @@
 "use client";
-
-import { useState } from "react";
 import { Lock, ChevronRight } from "lucide-react";
-import ChangePasswordModal from "./changepasswordmodal";
 
-export default function SettingsMenu() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
+export default function SettingsMenu({ onOpenModal }: any) {
   return (
-    <>
-      <div className="px-4 pb-6 max-w-4xl mx-auto">
-        <button 
-          onClick={() => setIsModalOpen(true)}
-          className="w-full bg-white border border-gray-200 rounded-xl p-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
-        >
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-[#1e3a8a]/10 rounded-full flex items-center justify-center">
-              <Lock className="w-5 h-5 text-[#1e3a8a]" />
-            </div>
-            <span className="text-[#1e3a8a] font-semibold">Change Password</span>
+    <div className="px-6 py-6 max-w-4xl mx-auto">
+      <button 
+        onClick={onOpenModal}
+        className="w-full bg-white border-2 border-gray-50 rounded-[2rem] p-5 flex items-center justify-between hover:bg-gray-50 transition-all group"
+      >
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 bg-[#640D14]/5 rounded-2xl flex items-center justify-center group-hover:bg-[#640D14] transition-colors duration-500">
+            <Lock className="w-5 h-5 text-[#640D14] group-hover:text-white" />
           </div>
-          <ChevronRight className="w-5 h-5 text-gray-400" />
-        </button>
-      </div>
-
-      <ChangePasswordModal 
-        open={isModalOpen} 
-        onOpenChange={setIsModalOpen} 
-      />
-    </>
+          <span className="text-[#38040E] font-black uppercase text-xs tracking-widest">Security & Password</span>
+        </div>
+        <ChevronRight className="w-5 h-5 text-gray-300" />
+      </button>
+    </div>
   );
 }
