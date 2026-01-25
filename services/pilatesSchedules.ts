@@ -58,6 +58,29 @@ export const scheduleApi = {
     });
     return res.json();
   },
+  create: async (data: any) => {
+    const res = await fetch(`/api/pilates/schedules`, {
+      method: 'POST',
+      headers: getHeaders(),
+      body: JSON.stringify(data),
+    });
+    return res.json();
+  },
+  update: async (id: number, data: any) => {
+    const res = await fetch(`/api/pilates/schedules/id/${id}`, {
+      method: 'PUT',
+      headers: getHeaders(),
+      body: JSON.stringify(data),
+    });
+    return res.json();
+  },
+  delete: async (id: number) => {
+    const res = await fetch(`/api/pilates/schedules/id/${id}`, {
+      method: 'DELETE',
+      headers: getHeaders(),
+    });
+    return res.json();
+  }
   
   // ... create, update, delete tetap sama ...
 };

@@ -4,37 +4,54 @@ import { scheduleApi } from '@/services/pilatesSchedules';
 import { ClassCard } from '@/components/admin/classes/classcard';
 import ClassModal from '@/components/admin/classes/classmodal';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Loader2 } from 'lucide-react'; // <--- Tambahkan ini
+import { Loader2, Search } from 'lucide-react'; // Tambahkan Search icon
 import Swal from 'sweetalert2';
+import { useDebounce } from "use-debounce";
 
 export default function SchedulePage() {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // Tambahkan state untuk menyimpan ID yang akan di-update
   const [selectedId, setSelectedId] = useState<number | null>(null);
 
+  // 1. Tambahkan state untuk parameter pencarian
+  const [searchQuery, setSearchQuery] = useState("");
+  const debouncedSearch = useDebounce(searchQuery, 500); // Tunggu 500ms setelah user mengetik
+
+  // 2. Update fetchData untuk menerima parameter
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const res = await scheduleApi.getAll();
-      if (res.code === 200) setData(res.data.data);
+      // Masukkan parameter sesuai dengan definisi getAll di service Anda
+      const res = await scheduleApi.getAll({
+        search: searchQuery,
+        page: 1,
+        limit: 10
+      });
+      
+      if (res.code === 200) {
+        setData(res.data?.data || []);
+      }
     } catch (error) {
       console.error("Fetch error:", error);
+      setData([]);
     } finally {
       setIsLoading(false);
     }
   };
 
-  useEffect(() => { fetchData(); }, []);
+  // 3. Trigger fetch saat debouncedSearch berubah
+  useEffect(() => {
+    fetchData();
+  }, [debouncedSearch]);
 
   const handleOpenEdit = (id: number) => {
-    setSelectedId(id); // Set ID sebelum buka modal
+    setSelectedId(id);
     setIsModalOpen(true);
   };
   
   const handleCloseModal = () => {
-    setSelectedId(null); // Reset ID saat tutup
+    setSelectedId(null);
     setIsModalOpen(false);
   };
   
@@ -47,8 +64,6 @@ export default function SchedulePage() {
   
       if (res.code === 200 || res.status === "OK") {
         handleCloseModal();
-        
-        // Animasi Berhasil
         Swal.fire({
           title: selectedId ? 'Update Successful!' : 'Schedule Created!',
           icon: 'success',
@@ -61,21 +76,16 @@ export default function SchedulePage() {
           background: '#fff',
           color: '#38040E',
         });
-        
         fetchData();
       } else {
         throw new Error("API Response Error");
       }
     } catch (error) {
-      // Animasi Gagal
       Swal.fire({
         title: 'Action Failed',
         text: 'Something went wrong, please check your input.',
         icon: 'error',
         confirmButtonColor: '#640D14',
-        showClass: {
-          popup: 'animate__animated animate__shakeX' // Animasi goyang jika error
-        }
       });
     } finally {
       setIsLoading(false);
@@ -108,17 +118,32 @@ export default function SchedulePage() {
 
   return (
     <div className="p-8 max-w-7xl mx-auto min-h-screen">
-      <div className="flex justify-between items-center mb-10">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-10">
         <div>
           <h1 className="text-3xl font-black text-[#38040E]">Class Schedules</h1>
           <p className="text-gray-400 font-medium">Kelola jadwal harian pilates</p>
         </div>
-        <button 
-          onClick={() => setIsModalOpen(true)}
-          className="bg-[#640D14] text-white px-8 py-4 rounded-2xl font-bold shadow-lg shadow-[#640D14]/20 hover:scale-105 active:scale-95 transition-all"
-        >
-          + Create Schedule
-        </button>
+
+        <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+          {/* 4. Input Search UI */}
+          <div className="relative w-full sm:w-64">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+            <input 
+              type="text"
+              placeholder="Search classes..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-12 pr-4 py-3 bg-gray-100 border-none rounded-2xl text-sm font-bold focus:ring-2 focus:ring-[#640D14] transition-all"
+            />
+          </div>
+
+          <button 
+            onClick={() => setIsModalOpen(true)}
+            className="w-full sm:w-auto bg-[#640D14] text-white px-8 py-3.5 rounded-2xl font-bold shadow-lg shadow-[#640D14]/20 hover:scale-105 active:scale-95 transition-all"
+          >
+            + Create Schedule
+          </button>
+        </div>
       </div>
 
       {isLoading && data.length === 0 ? (
@@ -126,33 +151,41 @@ export default function SchedulePage() {
           <Loader2 className="w-10 h-10 animate-spin text-[#640D14]" />
         </div>
       ) : (
-        <motion.div 
-          layout // Animasi perpindahan posisi otomatis
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
-          {data.map((item: any) => (
-            <motion.div
-              key={item.id}
-              initial={{ opacity: 0, y: 20 }} // Mulai dari bawah & transparan
-              animate={{ opacity: 1, y: 0 }}    // Berakhir di posisi normal
-              exit={{ opacity: 0, scale: 0.95 }} // Saat dihapus mengecil
-              transition={{ duration: 0.3 }}
+        <>
+          {data.length > 0 ? (
+            <motion.div 
+              layout
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
             >
-              <ClassCard 
-                item={item} 
-                onDelete={() => handleDelete(item.id)}
-                onEdit={() => handleOpenEdit(item.id)} 
-              />
+              {data.map((item: any) => (
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <ClassCard 
+                    item={item} 
+                    onDelete={() => handleDelete(item.id)}
+                    onEdit={() => handleOpenEdit(item.id)} 
+                  />
+                </motion.div>
+              ))}
             </motion.div>
-          ))}
-        </motion.div>
+          ) : (
+            <div className="text-center py-20 bg-gray-50 rounded-[2.5rem] border-2 border-dashed border-gray-200">
+              <p className="text-gray-400 font-bold uppercase tracking-widest text-xs">No schedules found</p>
+            </div>
+          )}
+        </>
       )}
 
       <AnimatePresence>
         {isModalOpen && (
           <ClassModal 
             isOpen={isModalOpen} 
-            editId={selectedId} // Kirim selectedId sebagai editId ke modal
+            editId={selectedId}
             onClose={handleCloseModal} 
             onSubmit={handleSubmit}
             isLoading={isLoading}
