@@ -29,6 +29,8 @@ const nextConfig: NextConfig = {
       { source: "/api/pilates/masters/all", destination: `${base}/pilates/masters/all` },
       { source: "/api/coaches/all", destination: `${base}/coaches/all` },
 
+      { source: "/api/users/transaction/topup", destination: `${base}/users/transaction/topup` },
+
     ];
   },
 };
