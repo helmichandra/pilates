@@ -15,6 +15,7 @@ interface TokenData {
   username: string;
   email: string;
   role: string;
+  role_id: string; // Tambahkan ini
   exp: number;
 }
 
@@ -47,7 +48,13 @@ export default function SignInForm() {
     localStorage.setItem("token", token);
     const decodedToken = decodeToken(token);
     if (decodedToken) {
-      const userData = { id: decodedToken.id, username: decodedToken.username, email: decodedToken.email, role: decodedToken.role };
+      const userData = { 
+        id: decodedToken.id, 
+        username: decodedToken.username, 
+        email: decodedToken.email, 
+        role: decodedToken.role,
+        role_id: decodedToken.role_id // Simpan role_id ke localStorage
+      };
       localStorage.setItem("userData", JSON.stringify(userData));
     }
   };
@@ -56,23 +63,36 @@ export default function SignInForm() {
     e.preventDefault();
     setError("");
     setIsLoading(true);
+    
     try {
       const response = await fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-Api-Key': 'X-Secret-Key' },
         body: JSON.stringify({ username, password }),
       });
+      
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       const result = await response.json();
       
       if (result.data?.token) {
-        storeToken(result.data.token);
-        setIsSuccess(true); // Aktifkan animasi sukses
+        const token = result.data.token;
+        storeToken(token);
         
-        // Delay 1.5 detik untuk animasi sebelum pindah halaman
+        // Decode token untuk mendapatkan role
+        const decoded = decodeToken(token);
+        setIsSuccess(true);
+        
+        // Tentukan rute berdasarkan role_id atau role
+        // Jika role_id "1" atau role "Admin", arahkan ke dashboard-admin
+        const targetRoute = (decoded?.role_id === "1" || decoded?.role === "Admin")
+          ? "/dashboard-admin/home"
+          : "/dashboard-user/home";
+  
+        // Delay 1.5 detik untuk animasi sukses
         setTimeout(() => {
-          router.push("/dashboard-user/home");
+          router.push(targetRoute);
         }, 1500);
+        
       } else {
         throw new Error("Token not received");
       }
