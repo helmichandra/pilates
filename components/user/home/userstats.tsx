@@ -23,7 +23,7 @@ export default function UserStats({
             {userName.charAt(0)}
           </div>
           <div>
-            <p className="text-[10px] text-gray-400 font-black uppercase tracking-[0.2em]">GOOD MORNING</p>
+            <p className="text-[10px] text-gray-400 font-black uppercase tracking-[0.2em]">HALLO!</p>
             <p className="text-xl font-black text-[#38040E] uppercase">{userName}</p>
           </div>
         </div>

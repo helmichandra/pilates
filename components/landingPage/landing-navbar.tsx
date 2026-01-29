@@ -2,6 +2,8 @@
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,7 +24,16 @@ export default function Navigation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0">
-            <span className="text-2xl font-black text-gray-900">Fixclub.</span>
+            <motion.div 
+                whileTap={{ scale: 0.95 }}
+                className="flex-shrink-0 cursor-pointer flex items-center gap-3" 
+                onClick={() => router.push('/')}
+              >
+                <div className="relative w-11 h-11 overflow-hidden rounded-2xl shadow-lg shadow-[#640D14]/10 border border-gray-100">
+                  <Image src="/media/logo.jpeg" alt="Logo" fill className="object-cover" />
+                </div>
+                <span className="font-black text-[#38040E] tracking-tighter text-lg hidden sm:block">FIX PILATES</span>
+              </motion.div>
           </div>
           
           <div className="hidden md:flex items-center space-x-8">
