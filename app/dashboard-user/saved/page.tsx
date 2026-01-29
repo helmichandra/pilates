@@ -1,100 +1,127 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { jwtDecode } from "jwt-decode";
+import Swal from "sweetalert2";
+import { motion, AnimatePresence } from "framer-motion";
+import { Loader2 } from "lucide-react";
+
 import BookingCard from "@/components/user/savedbooking/bookingcard";
 import { BookingCardSkeleton } from "@/components/user/savedbooking/bookingcardskeleton";
 import EmptyState from "@/components/user/savedbooking/emptystate";
 import BookingTabs from "@/components/user/savedbooking/bookingtabs";
-
-// Mock data
-const mockBookings = [
-  {
-    id: "1",
-    date: "Wednesday, Jan 15, 2026",
-    time: "10:00",
-    duration: "50 mins",
-    title: "WUNDA CHAIR INT",
-    type: "chair" as const,
-    credit: 1,
-    level: "all levels",
-    coach: "Michael",
-    location: "ALPHA PILATES, Chair room",
-    status: "upcoming" as const,
-  },
-  {
-    id: "2",
-    date: "Friday, Jan 17, 2026",
-    time: "14:00",
-    duration: "60 mins",
-    title: "CHAIR FLOW",
-    type: "chair" as const,
-    credit: 1,
-    level: "all levels",
-    coach: "Elena",
-    location: "ALPHA PILATES, Chair Room",
-    status: "upcoming" as const,
-  },
-  {
-    id: "3",
-    date: "Monday, Jan 13, 2026",
-    time: "08:00",
-    duration: "55 mins",
-    title: "BASIC REFORMER",
-    type: "reformer" as const,
-    credit: 1,
-    level: "all levels",
-    coach: "Vira",
-    location: "ALPHA PILATES, Reformer room",
-    status: "completed" as const,
-  },
-  {
-    id: "4",
-    date: "Saturday, Jan 11, 2026",
-    time: "11:00",
-    duration: "60 mins",
-    title: "PRIVATE SESSION",
-    type: "private" as const,
-    credit: 1,
-    level: "all levels",
-    coach: "Sarah",
-    location: "ALPHA PILATES, Private Room 1",
-    status: "completed" as const,
-  },
-];
+import { bookingApi } from "@/services/bookingServices";
 
 export default function MyBookingsPage() {
   const [activeTab, setActiveTab] = useState<"upcoming" | "past">("upcoming");
-  const [isLoading, setIsLoading] = useState(true);
-  const [bookings, setBookings] = useState(mockBookings);
+  const [isLoading, setIsLoading] = useState(true); // Loading awal (skeleton)
+  const [isProcessing, setIsProcessing] = useState(false); // Loading untuk Loader2 (overlay)
+  const [bookings, setBookings] = useState<any[]>([]);
 
-  // Simulate API call
-  useEffect(() => {
+  // Fungsi Fetch Data dari API
+  const fetchUserBookings = useCallback(async () => {
     setIsLoading(true);
-    setTimeout(() => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const decoded: any = jwtDecode(token);
+      const userId = decoded.id || decoded.user_id;
+
+      const res = await bookingApi.getUserBookings(userId);
+
+      if (res.code === 200 && res.data?.data) {
+        const mappedData = res.data.data.map((b: any) => {
+          const bDate = new Date(b.booking_date);
+          return {
+            id: b.id,
+            date: bDate.toLocaleDateString('en-GB', { 
+              weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' 
+            }),
+            time: new Date(b.created_date).toLocaleTimeString('en-GB', { 
+              hour: '2-digit', minute: '2-digit' 
+            }),
+            duration: "55 MIN", 
+            title: b.booking_code, 
+            type: "Class", 
+            credit: b.credit_used,
+            coach: b.modified_by || "Staff",
+            location: "ALPHA PILATES",
+            // Mapping status: Booked -> upcoming, selain itu -> cancelled/past
+            status: b.status.toLowerCase() === "booked" ? "upcoming" : "cancelled"
+          };
+        });
+        setBookings(mappedData);
+      }
+    } catch (error) {
+      console.error("Fetch bookings error:", error);
+    } finally {
       setIsLoading(false);
-    }, 1500);
-  }, [activeTab]);
+    }
+  }, []);
 
-  const handleCancelBooking = (id: string) => {
-    console.log("Cancelling booking:", id);
-    // Add cancel logic here
+  useEffect(() => {
+    fetchUserBookings();
+  }, [fetchUserBookings]);
+
+  // Fungsi Cancel Booking dengan Loader2 Overlay
+  const handleCancelBooking = async (id: number) => {
+    const result = await Swal.fire({
+      title: 'Cancel Booking?',
+      text: "Apakah Anda yakin ingin membatalkan jadwal ini?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#640D14',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Cancel it!'
+    });
+
+    if (result.isConfirmed) {
+      setIsProcessing(true); // Memunculkan Loader2
+      try {
+        const res = await bookingApi.cancelBooking(id);
+        
+        if (res.code === 200 || res.status === "OK") {
+          await Swal.fire('Cancelled!', 'Booking telah dibatalkan.', 'success');
+          fetchUserBookings(); 
+        } else {
+          throw new Error(res.message || "Gagal membatalkan");
+        }
+      } catch (error: any) {
+        Swal.fire('Error', error.message, 'error');
+      } finally {
+        setIsProcessing(false); // Menyembunyikan Loader2
+      }
+    }
   };
 
-  const handleViewDetails = (id: string) => {
-    console.log("Viewing details for:", id);
-    // Add view details logic here
-  };
-
-  const filteredBookings = bookings.filter((booking) =>
-    activeTab === "upcoming"
-      ? booking.status === "upcoming"
-      : ["completed", "cancelled"].includes(booking.status)
-  );
+  const filteredBookings = bookings.filter((booking) => {
+    if (activeTab === "upcoming") {
+      return booking.status === "upcoming";
+    } else {
+      return booking.status === "cancelled" || booking.status === "completed";
+    }
+  });
 
   return (
     <div className="min-h-screen bg-gray-50">
-      
-      {/* Page Header */}
+      {/* 1. Loader2 Overlay - Muncul saat proses hit API Cancel */}
+      <AnimatePresence>
+        {isProcessing && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-black/30 backdrop-blur-sm flex items-center justify-center"
+          >
+            <div className="bg-white p-8 rounded-[2.5rem] shadow-2xl flex flex-col items-center gap-4">
+              <Loader2 className="w-10 h-10 animate-spin text-[#640D14]" />
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">Processing...</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className="bg-white border-b">
         <div className="max-w-6xl mx-auto px-4 py-6">
           <h1 className="text-2xl md:text-3xl font-bold text-[#640D14] italic flex items-center gap-2">
@@ -121,14 +148,13 @@ export default function MyBookingsPage() {
               <BookingCard
                 key={booking.id}
                 {...booking}
-                onCancel={handleCancelBooking}
-                onViewDetails={handleViewDetails}
+                onCancel={() => handleCancelBooking(booking.id)}
+                onViewDetails={(id: string) => console.log("Details:", id)}
               />
             ))}
           </div>
         )}
       </main>
-
     </div>
   );
 }

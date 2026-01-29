@@ -15,9 +15,7 @@ export default function TopUpPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
-  const token = localStorage.getItem("token"); // Pastikan token disimpan di localStorage
 
-  console.log(token);
   const packagesData = {
     reformer: [
       { id: 1, credits: 1, name: "Single Drop-in", price: "Rp 175.000" },
@@ -35,6 +33,7 @@ export default function TopUpPage() {
       { id: 9, credits: 12, name: "Pro Private", price: "Rp 9.000.000", badge: "BEST VALUE", promotion: "Buy 10 + 2 Free" },
     ],
   };
+
   const handlePackageSelect = async (pkg: any) => {
     setIsLoading(true);
     setStatus("idle");
@@ -42,24 +41,30 @@ export default function TopUpPage() {
     try {
       const result = await topupApi.postTopup(pkg.id);
 
-      // Jika sukses (Code 200)
-      if (result.code === 200 || result.status === "success") {
+      if (result.code === 200 || result.status === "OK") {
         setStatus("success");
-        setMessage(`Berhasil memilih paket ${pkg.name}. Transaksi sedang diproses.`);
-        
-        // DURASI LAMA (8 detik) agar user sempat membaca
-        setTimeout(() => setStatus("idle"), 8000);
+        setMessage("Order created. Redirecting to payment...");
+
+        const paymentUrl = result.data?.midtrans_webhook_url;
+
+        if (paymentUrl) {
+          // Segera hapus referensi data jika perlu, lalu redirect
+          setTimeout(() => {
+            window.location.replace(paymentUrl); // Menggunakan replace agar tidak bisa 'back' ke status loading
+          }, 1500);
+        } else {
+          throw new Error("Payment link missing");
+        }
       } else {
-        throw new Error(result.message || "Terjadi kesalahan pada server");
+        throw new Error("Transaction failed");
       }
     } catch (error: any) {
-      console.error("Topup error:", error);
+      // Jangan tampilkan detail teknis ke user, cukup pesan umum
       setStatus("error");
-      
-      // Pesan error spesifik dari catch
-      setMessage(error.message || "Terjadi kesalahan koneksi ke server");
+      setMessage("Something went wrong. Please try again.");
     } finally {
-      setIsLoading(false);
+      // setIsLoading tetap true jika sukses untuk menjaga overlay tetap aktif saat redirect
+      if (status === "error") setIsLoading(false);
     }
   };
 
@@ -107,10 +112,10 @@ export default function TopUpPage() {
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
               className="bg-white rounded-[2.5rem] p-8 max-w-sm w-full shadow-2xl text-center"
             >
-              {isLoading ? (
+              {isLoading && status === "idle" ? (
                 <div className="flex flex-col items-center py-4">
                   <Loader2 className="w-12 h-12 text-[#640D14] animate-spin mb-4" />
-                  <p className="font-black uppercase tracking-widest text-[10px] text-gray-500">Processing...</p>
+                  <p className="font-black uppercase tracking-widest text-[10px] text-gray-500">Processing Payment...</p>
                 </div>
               ) : status === "success" ? (
                 <div className="flex flex-col items-center py-4">
@@ -118,10 +123,11 @@ export default function TopUpPage() {
                     <CheckCircle2 className="w-10 h-10 text-emerald-500" />
                   </div>
                   <h3 className="text-xl font-black text-[#38040E] uppercase mb-2">Success!</h3>
-                  <p className="text-gray-500 text-xs font-bold leading-relaxed mb-6">{message}</p>
-                  <Button onClick={() => setStatus("idle")} className="bg-emerald-500 text-white rounded-xl px-8 uppercase font-black text-[10px] tracking-widest h-12">
-                    Understood
-                  </Button>
+                  <p className="text-gray-500 text-xs font-bold mb-6">{message}</p>
+                  <div className="flex items-center gap-2 text-emerald-600">
+                    <Loader2 size={16} className="animate-spin" />
+                    <span className="text-[10px] font-black uppercase tracking-widest">Redirecting...</span>
+                  </div>
                 </div>
               ) : (
                 <div className="flex flex-col items-center py-4">
@@ -129,8 +135,11 @@ export default function TopUpPage() {
                     <XCircle className="w-10 h-10 text-red-500" />
                   </div>
                   <h3 className="text-xl font-black text-[#38040E] uppercase mb-2">Failed</h3>
-                  <p className="text-gray-500 text-xs font-bold leading-relaxed mb-6">{message}</p>
-                  <Button onClick={() => setStatus("idle")} className="bg-[#640D14] text-white rounded-xl px-8 uppercase font-black text-[10px] tracking-widest h-12 w-full transition-all">
+                  <p className="text-gray-500 text-xs font-bold mb-6">{message}</p>
+                  <Button 
+                    onClick={() => setStatus("idle")} 
+                    className="bg-[#640D14] text-white rounded-xl px-8 uppercase font-black text-[10px] tracking-widest h-12 w-full"
+                  >
                     Try Again
                   </Button>
                 </div>

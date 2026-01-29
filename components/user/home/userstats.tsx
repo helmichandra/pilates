@@ -4,13 +4,13 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 
 export default function UserStats({
-  userName = "Vira",
-  greeting = "GOOD MORNING",
-  reformerCount = 5,
-  chairCount = 2,
-  privateCount = 0,
+  userName = "User",
+  reformerCount = 0,
 }) {
   const router = useRouter();
+  const chairCount = 0;   // Sementara 0
+  const privateCount = 0; // Sementara 0
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: 40 }}
@@ -19,21 +19,15 @@ export default function UserStats({
     >
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-3">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#640D14] to-[#38040E] text-white flex items-center justify-center font-black text-2xl shadow-lg">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#640D14] to-[#38040E] text-white flex items-center justify-center font-black text-2xl shadow-lg uppercase">
             {userName.charAt(0)}
           </div>
           <div>
-            <p className="text-[10px] text-gray-400 font-black uppercase tracking-[0.2em]">
-              {greeting}
-            </p>
-            <p className="text-xl font-black text-[#38040E]">{userName}</p>
+            <p className="text-[10px] text-gray-400 font-black uppercase tracking-[0.2em]">GOOD MORNING</p>
+            <p className="text-xl font-black text-[#38040E] uppercase">{userName}</p>
           </div>
         </div>
-        <Button
-          onClick={() => router.push("/dashboard-user/topup")}
-          variant="ghost"
-          className="text-[#640D14] font-black text-xs bg-[#640D14]/5 rounded-full px-4"
-        >
+        <Button onClick={() => router.push("/dashboard-user/topup")} variant="ghost" className="text-[#640D14] font-black text-xs bg-[#640D14]/5 rounded-full px-4">
           + TOP UP
         </Button>
       </div>
@@ -45,9 +39,7 @@ export default function UserStats({
           { label: "Private", count: privateCount },
         ].map((item, i) => (
           <div key={i} className="text-center border-r last:border-0 border-gray-200">
-            <p className="text-[9px] text-gray-400 font-black uppercase tracking-widest mb-1">
-              {item.label}
-            </p>
+            <p className="text-[9px] text-gray-400 font-black uppercase tracking-widest mb-1">{item.label}</p>
             <p className="text-2xl font-black text-[#38040E]">{item.count}</p>
           </div>
         ))}

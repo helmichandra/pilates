@@ -56,7 +56,7 @@ export default function Navbar() {
         setIsLoggingOut(true);
         localStorage.clear();
         setTimeout(() => {
-          router.push("/landing-page");
+          router.push("/");
         }, 1500);
       }
     }

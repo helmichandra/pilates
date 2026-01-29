@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
 export default function BookingCard({
-  id, date, time, duration, title, type, credit, level, coach, location, status, onCancel, onViewDetails,
+  id, date, time, duration, title, type, credit, coach, location, status, onCancel, onViewDetails,
 }: any) {
   const statusStyles = {
     upcoming: "bg-emerald-50 text-emerald-700 border-emerald-100",
@@ -65,11 +65,12 @@ export default function BookingCard({
         >
           Details
         </Button>
+        
         {status === "upcoming" && (
           <Button
             variant="ghost"
             className="flex-1 text-red-600 hover:bg-red-50 h-12 rounded-xl font-black uppercase text-[10px] tracking-widest"
-            onClick={() => onCancel?.(id)}
+            onClick={onCancel}
           >
             Cancel
           </Button>

@@ -3,8 +3,8 @@ import { motion } from "framer-motion";
 
 export default function BookingTabs({ activeTab, onTabChange }: any) {
   const tabs = [
-    { id: "upcoming", label: "Upcoming" },
-    { id: "past", label: "Past Bookings" }
+    { id: "upcoming", label: "Booked" },
+    { id: "past", label: "Cancelled" }
   ];
 
   return (
