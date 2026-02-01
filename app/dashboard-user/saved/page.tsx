@@ -41,13 +41,12 @@ export default function MyBookingsPage() {
             time: new Date(b.created_date).toLocaleTimeString('en-GB', { 
               hour: '2-digit', minute: '2-digit' 
             }),
-            duration: "55 MIN", 
-            title: b.booking_code, 
-            type: "Class", 
+            duration: b.duration_minutes+" MIN", 
+            title: b.pilates_name, 
+            type: b.pilates_description, 
             credit: b.credit_used,
-            coach: b.modified_by || "Staff",
-            location: "ALPHA PILATES",
-            // Mapping status: Booked -> upcoming, selain itu -> cancelled/past
+            coach: b.coach_name || "Staff",
+            location: b.pilates_address,
             status: b.status.toLowerCase() === "booked" ? "upcoming" : "cancelled"
           };
         });

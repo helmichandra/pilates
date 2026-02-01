@@ -1,10 +1,11 @@
-"use client"
-import { useEffect, useState } from 'react';
+"use client";
+
+import { useEffect, useState, useCallback } from 'react';
 import { scheduleApi } from '@/services/pilatesSchedules';
 import { ClassCard } from '@/components/admin/classes/classcard';
 import ClassModal from '@/components/admin/classes/classmodal';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Loader2, Search } from 'lucide-react'; // Tambahkan Search icon
+import { Loader2, Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import Swal from 'sweetalert2';
 import { useDebounce } from "use-debounce";
 
@@ -14,23 +15,27 @@ export default function SchedulePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<number | null>(null);
 
-  // 1. Tambahkan state untuk parameter pencarian
+  // State untuk Pencarian & Pagination
   const [searchQuery, setSearchQuery] = useState("");
-  const debouncedSearch = useDebounce(searchQuery, 500); // Tunggu 500ms setelah user mengetik
+  const [debouncedValue] = useDebounce(searchQuery, 500); // Ambil value stringnya saja
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
-  // 2. Update fetchData untuk menerima parameter
-  const fetchData = async () => {
+  // fetchData dibungkus useCallback agar referensi fungsinya stabil
+  const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
-      // Masukkan parameter sesuai dengan definisi getAll di service Anda
       const res = await scheduleApi.getAll({
-        search: searchQuery,
-        page: 1,
-        limit: 10
+        search: debouncedValue,
+        page: currentPage,
+        limit: 9 // Sesuaikan limit per halaman
       });
       
       if (res.code === 200) {
         setData(res.data?.data || []);
+        // Hitung total halaman berdasarkan total data dari API
+        const totalData = res.data?.total || 0;
+        setTotalPages(Math.ceil(totalData / 9));
       }
     } catch (error) {
       console.error("Fetch error:", error);
@@ -38,12 +43,17 @@ export default function SchedulePage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [debouncedValue, currentPage]);
 
-  // 3. Trigger fetch saat debouncedSearch berubah
+  // Trigger fetch saat debouncedValue (pencarian) atau halaman berubah
   useEffect(() => {
     fetchData();
-  }, [debouncedSearch]);
+  }, [fetchData]);
+
+  // Reset ke halaman 1 saat user mulai mengetik pencarian baru
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [debouncedValue]);
 
   const handleOpenEdit = (id: number) => {
     setSelectedId(id);
@@ -67,26 +77,15 @@ export default function SchedulePage() {
         Swal.fire({
           title: selectedId ? 'Update Successful!' : 'Schedule Created!',
           icon: 'success',
-          iconColor: '#640D14',
-          showConfirmButton: false,
           timer: 2000,
-          timerProgressBar: true,
           toast: true,
           position: 'top-end',
-          background: '#fff',
-          color: '#38040E',
+          showConfirmButton: false,
         });
         fetchData();
-      } else {
-        throw new Error("API Response Error");
       }
     } catch (error) {
-      Swal.fire({
-        title: 'Action Failed',
-        text: 'Something went wrong, please check your input.',
-        icon: 'error',
-        confirmButtonColor: '#640D14',
-      });
+      Swal.fire({ title: 'Error', text: 'Something went wrong', icon: 'error' });
     } finally {
       setIsLoading(false);
     }
@@ -95,11 +94,9 @@ export default function SchedulePage() {
   const handleDelete = async (id: number) => {
     const result = await Swal.fire({
       title: 'Hapus Jadwal?',
-      text: "Data yang dihapus tidak dapat dikembalikan!",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#640D14',
-      cancelButtonColor: '#d33',
       confirmButtonText: 'Ya, Hapus!'
     });
 
@@ -111,7 +108,7 @@ export default function SchedulePage() {
           fetchData();
         }
       } catch (error) {
-        Swal.fire('Gagal!', 'Terjadi kesalahan saat menghapus.', 'error');
+        Swal.fire('Gagal!', 'Terjadi kesalahan.', 'error');
       }
     }
   };
@@ -125,7 +122,6 @@ export default function SchedulePage() {
         </div>
 
         <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
-          {/* 4. Input Search UI */}
           <div className="relative w-full sm:w-64">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
             <input 
@@ -153,26 +149,38 @@ export default function SchedulePage() {
       ) : (
         <>
           {data.length > 0 ? (
-            <motion.div 
-              layout
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-            >
-              {data.map((item: any) => (
-                <motion.div
-                  key={item.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <ClassCard 
-                    item={item} 
-                    onDelete={() => handleDelete(item.id)}
-                    onEdit={() => handleOpenEdit(item.id)} 
-                  />
-                </motion.div>
-              ))}
-            </motion.div>
+            <div className="space-y-8">
+              <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {data.map((item: any) => (
+                  <motion.div key={item.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+                    <ClassCard item={item} onDelete={() => handleDelete(item.id)} onEdit={() => handleOpenEdit(item.id)} />
+                  </motion.div>
+                ))}
+              </motion.div>
+
+              {/* Pagination UI */}
+              {totalPages > 1 && (
+                <div className="flex justify-center items-center gap-4 pt-6">
+                  <button 
+                    disabled={currentPage === 1}
+                    onClick={() => setCurrentPage(p => p - 1)}
+                    className="p-2 bg-gray-100 rounded-xl disabled:opacity-30 hover:bg-gray-200 transition-all"
+                  >
+                    <ChevronLeft size={20} />
+                  </button>
+                  <span className="font-bold text-[#38040E]">
+                    Page {currentPage} of {totalPages}
+                  </span>
+                  <button 
+                    disabled={currentPage === totalPages}
+                    onClick={() => setCurrentPage(p => p + 1)}
+                    className="p-2 bg-gray-100 rounded-xl disabled:opacity-30 hover:bg-gray-200 transition-all"
+                  >
+                    <ChevronRight size={20} />
+                  </button>
+                </div>
+              )}
+            </div>
           ) : (
             <div className="text-center py-20 bg-gray-50 rounded-[2.5rem] border-2 border-dashed border-gray-200">
               <p className="text-gray-400 font-bold uppercase tracking-widest text-xs">No schedules found</p>

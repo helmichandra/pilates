@@ -20,7 +20,7 @@ export default function BottomBar() {
       href: "/dashboard-user/booking",
     },
     {
-      name: "Saved",
+      name: "My Bookings",
       icon: Bookmark,
       href: "/dashboard-user/saved",
     },

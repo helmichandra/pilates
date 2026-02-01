@@ -25,6 +25,8 @@ const nextConfig: NextConfig = {
       { source: "/api/bookings/id/:id/cancel", destination: `${base}/bookings/id/:id/cancel` },
       { source: "/api/users/credits/my_credit", destination: `${base}/users/credits/my_credit` },
       { source: "/api/users/profile", destination: `${base}/users/profile` },
+      { source: "/api/users", destination: `${base}/users` },
+
     ];
   },
 };
