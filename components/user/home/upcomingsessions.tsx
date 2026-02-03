@@ -15,7 +15,7 @@ export default function UpcomingSessions({ sessions = [] }) {
         <Button 
            onClick={() => router.push("/dashboard-user/saved")}
            variant="link" 
-           className="text-[#640D14] font-black text-xs uppercase p-0 tracking-widest"
+           className="text-[#640D14] font-black text-xs uppercase p-0 tracking-widest cursor-pointer"
         >
           See All ({sessions.length})
         </Button>

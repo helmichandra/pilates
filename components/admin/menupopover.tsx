@@ -1,7 +1,6 @@
 "use client";
 
-import React from 'react';
-import { Package, CreditCard, Activity } from 'lucide-react';
+import { Package, CreditCard, Activity, Users } from 'lucide-react'; // Tambahkan Users
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -9,6 +8,7 @@ export default function MenuPopover({ isOpen, onClose }: { isOpen: boolean; onCl
   const menuLinks = [
     { icon: Package, label: 'Packages', href: '/dashboard-admin/packages' },
     { icon: CreditCard, label: 'Payments', href: '/dashboard-admin/payments' },
+    { icon: Users, label: 'Coaches', href: '/dashboard-admin/coaches' }, // Menu baru
     { icon: Activity, label: 'Activity Logs', href: '/dashboard-admin/activity-logs', active: true },
   ];
 

@@ -27,7 +27,7 @@ export default function UserStats({
             <p className="text-xl font-black text-[#38040E] uppercase">{userName}</p>
           </div>
         </div>
-        <Button onClick={() => router.push("/dashboard-user/topup")} variant="ghost" className="text-[#640D14] font-black text-xs bg-[#640D14]/5 rounded-full px-4">
+        <Button onClick={() => router.push("/dashboard-user/topup")} variant="ghost" className="text-[#640D14] font-black text-xs bg-[#640D14]/5 rounded-full px-4 cursor-pointer">
           + TOP UP
         </Button>
       </div>

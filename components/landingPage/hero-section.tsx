@@ -1,6 +1,13 @@
+"use client";
 import { Check } from 'lucide-react';
+import { useRouter } from "next/navigation";
 
 export default function Hero() {
+
+  const router = useRouter();
+  const handleBooking = () => {
+    router.push("/dashboard-user/booking");
+  };
     return (
     <section id="home" className="pt-24 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-50 to-white overflow-hidden">
       <div className="max-w-7xl mx-auto">
@@ -21,10 +28,12 @@ export default function Hero() {
             </p>
             
             <div className="flex flex-wrap gap-4">
-              <button className="bg-red-600 text-white px-8 py-3.5 rounded-full hover:bg-red-700 transition transform hover:scale-105 shadow-lg hover:shadow-xl font-bold">
+              <button 
+              onClick={handleBooking}
+              className="bg-red-600 text-white px-8 py-3.5 rounded-full hover:bg-red-700 transition transform hover:scale-105 shadow-lg hover:shadow-xl font-bold cursor-pointer">
                 Book a Class
               </button>
-              <button className="bg-white text-gray-900 px-8 py-3.5 rounded-full border-2 border-gray-200 hover:border-gray-900 transition font-bold">
+              <button className="bg-white text-gray-900 px-8 py-3.5 rounded-full border-2 border-gray-200 hover:border-gray-900 transition font-bold cursor-pointer">
                 See Packages
               </button>
             </div>

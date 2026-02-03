@@ -26,6 +26,10 @@ const nextConfig: NextConfig = {
       { source: "/api/users/credits/my_credit", destination: `${base}/users/credits/my_credit` },
       { source: "/api/users/profile", destination: `${base}/users/profile` },
       { source: "/api/users", destination: `${base}/users` },
+      { source: "/api/users/profile/change_password", destination: `${base}/users/profile/change_password` },
+      { source: "/api/coaches", destination: `${base}/coaches` },
+      { source: "/api/coaches/:path*",  destination: `${base}/coaches/:path*` },
+      { source: "/api/users/:path*", destination: `${base}/users/:path*` },
 
     ];
   },

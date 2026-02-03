@@ -29,5 +29,18 @@ export const userApi = {
               "Authorization": `Bearer ${token}` }
         });
         return response.json();
-      }
+      },
+      changePassword: async (passwords: { old_password: string; new_password: string }) => {
+        const token = localStorage.getItem("token");
+        const response = await fetch('/api/users/profile/change_password', {
+            method: 'POST',
+            headers: { 
+                "Content-Type": "application/json",
+                "X-Api-Key": "X-Secret-Key",
+                "Authorization": `Bearer ${token}` 
+            },
+            body: JSON.stringify(passwords),
+        });
+        return response.json();
+    },      
   };

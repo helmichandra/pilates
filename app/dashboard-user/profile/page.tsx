@@ -14,7 +14,8 @@ export default function ProfilePage() {
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [userData, setUserData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
-
+  const token = localStorage.getItem("token");
+console.log(token);
   useEffect(() => {
     const fetchAllData = async () => {
       try {
