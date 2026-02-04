@@ -1,8 +1,19 @@
 import "./globals.css";
-import { Toaster } from "sonner"; // Tambahkan toaster agar toast bekerja
+import { Inter } from "next/font/google"; // Import font dari Google
+import { Toaster } from "sonner";
+import { Metadata } from "next";
 
-export const metadata = {
-  title: "fixclub.id", // Mengganti nama tab browser menjadi fixclub.id
+// Konfigurasi font Inter
+const inter = Inter({ 
+  subsets: ["latin"],
+  display: "swap" 
+});
+
+export const metadata: Metadata = {
+  title: {
+    default: "Fixclub",
+    template: "%s - Fixclub",
+  },
   description: "Fixing your lifestyle with Fix Club",
 };
 
@@ -13,9 +24,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className={inter.className}>
         {children}
-        {/* Tambahkan ini agar notifikasi toast dari Sonner muncul di aplikasi */}
         <Toaster position="top-center" richColors />
       </body>
     </html>
