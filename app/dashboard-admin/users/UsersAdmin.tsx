@@ -116,8 +116,23 @@ export default function UsersPage() {
       </main>
 
       {/* Modals tetap sama */}
-      <UserModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} type={modalType} initialData={selectedUser} />
-      <DeleteModal isOpen={isDeleteOpen} onClose={() => setIsDeleteOpen(false)} userName={selectedUser?.name || ""} onConfirm={() => setIsDeleteOpen(false)} />
+      <UserModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        type={modalType} 
+        initialData={selectedUser}
+        onSuccess={fetchUsers} // Fungsi ini akan memicu refresh data
+      />
+      
+      <DeleteModal 
+        isOpen={isDeleteOpen} 
+        onClose={() => setIsDeleteOpen(false)} 
+        userName={selectedUser?.username || selectedUser?.first_name || ""} 
+        onConfirm={() => {
+          setIsDeleteOpen(false);
+          fetchUsers(); // Refresh setelah delete
+        }} 
+      />
     </div>
   );
 }
