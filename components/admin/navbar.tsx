@@ -2,7 +2,8 @@
 import { useState, useEffect } from 'react';
 import { User, LogOut, Loader2, Sparkles } from 'lucide-react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
+import Link from 'next/link';
 import { motion, AnimatePresence } from "framer-motion";
 import Swal from 'sweetalert2';
 import {
@@ -16,8 +17,20 @@ import {
 
 export default function Navbar() {
   const router = useRouter();
+  const pathname = usePathname();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [mounted, setMounted] = useState(false);
+
+  // Daftar menu lengkap untuk tampilan Desktop
+  const desktopMenu = [
+    { label: 'Home', href: "/dashboard-admin/home" },
+    { label: 'Users', href: "/dashboard-admin/users" },
+    { label: 'Classes', href: "/dashboard-admin/classes" },
+    { label: 'Booking', href: "/dashboard-admin/booking" },
+    { label: 'Packages', href: "/dashboard-admin/packages" },
+    { label: 'Coaches', href: "/dashboard-admin/coaches" },
+    { label: 'Payments', href: "/dashboard-admin/payments" },
+  ];
 
   useEffect(() => {
     setMounted(true);
@@ -46,13 +59,9 @@ export default function Navbar() {
 
       if (result.isConfirmed) {
         setIsLoggingOut(true);
-        
-        // Membersihkan sesi admin
         localStorage.clear();
-
-        // Delay untuk efek animasi sign-out
         setTimeout(() => {
-          router.push("/auth/login"); // Mengarah kembali ke login page
+          router.push("/auth/login");
         }, 1500);
       }
     }
@@ -62,7 +71,6 @@ export default function Navbar() {
 
   return (
     <>
-      {/* ANIMASI OVERLAY LOGOUT */}
       <AnimatePresence>
         {isLoggingOut && (
           <motion.div
@@ -71,11 +79,7 @@ export default function Navbar() {
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[110] bg-[#38040E] flex flex-col items-center justify-center text-white"
           >
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              className="flex flex-col items-center"
-            >
+            <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="flex flex-col items-center">
               <div className="relative mb-6">
                 <Loader2 className="w-16 h-16 animate-spin text-[#640D14]" strokeWidth={3} />
                 <Sparkles className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 text-white" />
@@ -89,47 +93,55 @@ export default function Navbar() {
 
       <header className="bg-white border-b border-gray-100 sticky top-0 z-50 py-2">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-11 h-11 relative overflow-hidden rounded-2xl shadow-lg shadow-[#640D14]/10 border border-gray-50">
-              <Image 
-                src="/media/logo.jpeg" 
-                alt="Fix Pilates Logo" 
-                fill
-                className="object-cover"
-              />
+          
+          {/* Section Kiri: Logo + Desktop Nav */}
+          <div className="flex items-center gap-10">
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 relative overflow-hidden rounded-2xl shadow-lg shadow-[#640D14]/10 border border-gray-50">
+                <Image src="/media/logo.jpeg" alt="Fix Pilates Logo" fill className="object-cover" />
+              </div>
+              <div className="hidden sm:block">
+                <span className="font-black text-[#38040E] tracking-tighter text-lg block leading-none">Administrator</span>
+              </div>
             </div>
-            <div className="hidden sm:block">
-              <span className="font-black text-[#38040E] tracking-tighter text-lg block leading-none">FIX PILATES</span>
-              <span className="text-[9px] font-black text-[#640D14] uppercase tracking-[0.3em]">Administrator</span>
-            </div>
+
+            {/* DESKTOP MENU: Muncul hanya di layar LG ke atas */}
+            <nav className="hidden lg:flex items-center gap-1 bg-gray-50 p-1 rounded-2xl border border-gray-100">
+              {desktopMenu.map((item) => {
+                const isActive = pathname === item.href;
+                return (
+                  <Link key={item.href} href={item.href}>
+                    <div className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all cursor-pointer ${
+                      isActive 
+                        ? "bg-[#640D14] text-white shadow-md shadow-[#640D14]/20" 
+                        : "text-gray-400 hover:text-[#38040E]"
+                    }`}>
+                      {item.label}
+                    </div>
+                  </Link>
+                );
+              })}
+            </nav>
           </div>
 
           <div className="flex items-center gap-4">
+            {/* Activity Log link khusus desktop */}
+            <Link href="/dashboard-admin/activity-logs" className="hidden lg:block text-[10px] font-black text-gray-400 uppercase tracking-widest hover:text-[#640D14] transition-colors">
+              Activity Logs
+            </Link>
+
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <motion.button 
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-10 h-10 bg-gradient-to-br from-[#250902] to-[#38040E] rounded-full flex items-center justify-center cursor-pointer shadow-lg shadow-[#640D14]/20 border border-white/10"
-                >
+                <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-10 h-10 bg-gradient-to-br from-[#250902] to-[#38040E] rounded-full flex items-center justify-center cursor-pointer shadow-lg shadow-[#640D14]/20 border border-white/10">
                   <User className="w-5 h-5 text-white" />
                 </motion.button>
               </DropdownMenuTrigger>
-              
               <DropdownMenuContent align="end" className="w-64 mt-4 rounded-[2rem] shadow-2xl border-none p-3 bg-white/95 backdrop-blur-md">
-                <DropdownMenuLabel className="font-black text-[10px] uppercase tracking-[0.2em] text-gray-400 px-4 py-4">
-                  Admin Panel
-                </DropdownMenuLabel>
-                
+                <DropdownMenuLabel className="font-black text-[10px] uppercase tracking-[0.2em] text-gray-400 px-4 py-4">Admin Panel</DropdownMenuLabel>
                 <DropdownMenuSeparator className="mx-2 bg-gray-100" />
-                
-                <DropdownMenuItem 
-                  onClick={handleLogout} 
-                  className="cursor-pointer py-4 px-4 text-red-600 focus:bg-red-50 focus:text-red-700 font-black rounded-2xl transition-all"
-                >
+                <DropdownMenuItem onClick={handleLogout} className="cursor-pointer py-4 px-4 text-red-600 focus:bg-red-50 focus:text-red-700 font-black rounded-2xl transition-all">
                   <div className="flex items-center uppercase text-[10px] tracking-widest">
-                    <LogOut className="mr-3 h-4 w-4" strokeWidth={3} />
-                    Log Out Admin
+                    <LogOut className="mr-3 h-4 w-4" strokeWidth={3} /> Log Out Admin
                   </div>
                 </DropdownMenuItem>
               </DropdownMenuContent>

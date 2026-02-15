@@ -19,11 +19,10 @@ export default function HeroBanner() {
       {/* Bottom Blur Gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-gray-50"></div>
       
-      <div className="relative z-10 px-6 h-full flex flex-col justify-center">
+      <div className="relative z-10 px-6 h-full flex flex-col justify-center max-w-6xl mx-auto w-full">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
         >
           <h2 className="text-4xl md:text-5xl font-black text-white italic mb-2 tracking-tighter">
             FIX PILATES

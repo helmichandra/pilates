@@ -1,46 +1,77 @@
 export const userApi = {
-    getMyCredit: async () => {
+  getMyCredit: async () => {
+    const token = localStorage.getItem("token");
+    const response = await fetch('/api/users/credits/my_credit', {
+      headers: { 
+          "Content-Type": "application/json",
+          "X-Api-Key": "X-Secret-Key",
+          "Authorization": `Bearer ${token}` }
+    });
+    return response.json();
+  },
+  
+  getUpcomingBookings: async (userId: string) => {
+    const token = localStorage.getItem("token");
+    const response = await fetch(`/api/bookings?user_id=${userId}`, {
+      headers: { 
+          "Content-Type": "application/json",
+          "X-Api-Key": "X-Secret-Key",
+          "Authorization": `Bearer ${token}` }
+    });
+    return response.json();
+  },
+
+  getProfile: async () => {
       const token = localStorage.getItem("token");
-      const response = await fetch('/api/users/credits/my_credit', {
-        headers: { 
+      const response = await fetch('/api/users/profile', {
+          headers: { 
             "Content-Type": "application/json",
             "X-Api-Key": "X-Secret-Key",
             "Authorization": `Bearer ${token}` }
       });
       return response.json();
     },
-    
-    getUpcomingBookings: async (userId: string) => {
+
+  changePassword: async (passwords: { old_password: string; new_password: string }) => {
       const token = localStorage.getItem("token");
-      const response = await fetch(`/api/bookings?user_id=${userId}`, {
-        headers: { 
-            "Content-Type": "application/json",
-            "X-Api-Key": "X-Secret-Key",
-            "Authorization": `Bearer ${token}` }
-      });
-      return response.json();
-    },
-    getProfile: async () => {
-        const token = localStorage.getItem("token");
-        const response = await fetch('/api/users/profile', {
-            headers: { 
+      const response = await fetch('/api/users/profile/change_password', {
+          method: 'PUT',
+          headers: { 
               "Content-Type": "application/json",
               "X-Api-Key": "X-Secret-Key",
-              "Authorization": `Bearer ${token}` }
-        });
-        return response.json();
-      },
-      changePassword: async (passwords: { old_password: string; new_password: string }) => {
-        const token = localStorage.getItem("token");
-        const response = await fetch('/api/users/profile/change_password', {
-            method: 'POST',
-            headers: { 
-                "Content-Type": "application/json",
-                "X-Api-Key": "X-Secret-Key",
-                "Authorization": `Bearer ${token}` 
-            },
-            body: JSON.stringify(passwords),
-        });
-        return response.json();
-    },      
-  };
+              "Authorization": `Bearer ${token}` 
+          },
+          body: JSON.stringify(passwords),
+      });
+      return response.json();
+  },
+
+  // --- TAMBAHAN BARU UNTUK UPDATE & GET BY ID ---
+
+  getUserById: async (userId: string | number) => {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`/api/users/id/${userId}`, {
+          method: 'GET',
+          headers: { 
+              "Content-Type": "application/json",
+              "X-Api-Key": "X-Secret-Key",
+              "Authorization": `Bearer ${token}` 
+          }
+      });
+      return response.json();
+  },
+
+  updateUser: async (userId: string | number, userData: any) => {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`/api/users/id/${userId}`, {
+          method: 'PUT',
+          headers: { 
+              "Content-Type": "application/json",
+              "X-Api-Key": "X-Secret-Key",
+              "Authorization": `Bearer ${token}` 
+          },
+          body: JSON.stringify(userData),
+      });
+      return response.json();
+  },
+};

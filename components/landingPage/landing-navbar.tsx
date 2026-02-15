@@ -64,8 +64,10 @@ export default function Navigation() {
             <a href="#about" className="block text-gray-700 hover:text-red-600 font-medium">ABOUT</a>
             <a href="#facility" className="block text-gray-700 hover:text-red-600 font-medium">FACILITY</a>
             <a href="#booking" className="block text-gray-700 hover:text-red-600 font-medium">BOOKING</a>
-            <button className="w-full bg-red-600 text-white px-6 py-2.5 rounded-full font-semibold">
-              Book Session
+            <button 
+              onClick={handleBooking}
+              className="w-full bg-red-600 text-white px-6 py-2.5 rounded-full font-semibold">
+                Book Session
             </button>
           </div>
         </div>

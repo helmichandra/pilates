@@ -14,12 +14,10 @@ export default function ProfilePage() {
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [userData, setUserData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const token = localStorage.getItem("token");
-console.log(token);
+
   useEffect(() => {
     const fetchAllData = async () => {
       try {
-        // Ambil data dari dua API berbeda secara paralel
         const [profileRes, creditRes] = await Promise.all([
           userApi.getProfile(),
           userApi.getMyCredit()
@@ -38,7 +36,6 @@ console.log(token);
         setIsLoading(false);
       }
     };
-
     fetchAllData();
   }, []);
 
@@ -51,24 +48,47 @@ console.log(token);
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Sekarang menggunakan Username dan Email dari API Profile */}
+    <div className="min-h-screen bg-gray-50/50 pb-32">
       <ProfileHeader 
         name={userData?.username} 
         email={userData?.email} 
         initial={userData?.username?.charAt(0)} 
       />
       
-      {/* Menggunakan Credit dari API Credit */}
-      <CreditCards 
-        reformerCount={userData?.reformerCredit || 0} 
-        chairCount={0} 
-        privateCount={0} 
-      />
-      
-      <SettingsMenu onOpenModal={() => setIsPasswordModalOpen(true)} />
-      
-      <TopUpHistory />
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 mt-8 md:mt-0">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          <section className="lg:col-span-7 space-y-6">
+            <div className="bg-white rounded-[3rem] p-6 md:p-10 shadow-sm border border-gray-100">
+              <h3 className="text-xl font-black text-[#38040E] mb-8 uppercase italic tracking-tighter">
+                Your Balances
+              </h3>
+              <CreditCards 
+                reformerCount={userData?.reformerCredit || 0} 
+                chairCount={0} 
+                privateCount={0} 
+              />
+            </div>
+          </section>
+
+          {/* Kolom Kanan: Settings & History (5/12 bagian) */}
+          <aside className="lg:col-span-5 space-y-6 lg:sticky lg:top-24">
+            {/* Box Settings */}
+            <div className="bg-white rounded-[3rem] p-6 md:p-8 shadow-sm border border-gray-100">
+              <h3 className="text-lg font-black text-[#38040E] mb-6 uppercase italic tracking-tighter">
+                Account Settings
+              </h3>
+              <SettingsMenu onOpenModal={() => setIsPasswordModalOpen(true)} />
+            </div>
+
+            {/* Box History */}
+            <div className="bg-white rounded-[3rem] p-6 md:p-8 shadow-sm border border-gray-100">
+              <TopUpHistory />
+            </div>
+          </aside>
+          
+        </div>
+      </main>
 
       <ChangePasswordModal 
         open={isPasswordModalOpen} 
