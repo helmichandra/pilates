@@ -55,19 +55,11 @@ export default function UserCard({ user, onEdit, onDelete }: UserProps) {
 
       {isExpanded && (
         <div className="animate-in fade-in slide-in-from-top-1 duration-200">
-          <div className="p-4 grid grid-cols-3 gap-3">
+          <div className="p-4 grid grid-cols-1 gap-3">
             <div className="bg-white border border-gray-200 rounded-lg p-3 text-center">
               <p className="text-[10px] text-gray-400 mb-1 font-bold">REFORMER</p>
               <p className="text-xl font-bold text-blue-600">{user.credits.reformer}</p>
-            </div>
-            <div className="bg-white border border-gray-200 rounded-lg p-3 text-center">
-              <p className="text-[10px] text-gray-400 mb-1 font-bold">CHAIR</p>
-              <p className="text-xl font-bold text-purple-600">{user.credits.chair}</p>
-            </div>
-            <div className="bg-white border border-gray-200 rounded-lg p-3 text-center">
-              <p className="text-[10px] text-gray-400 mb-1 font-bold">PRIVATE</p>
-              <p className="text-xl font-bold text-orange-600">{user.credits.private}</p>
-            </div>
+            </div>          
           </div>
 
           <div className="p-4 pt-0 flex items-center justify-end gap-2">

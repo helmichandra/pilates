@@ -34,11 +34,10 @@ export default function SchedulePage() {
       if (res.code === 200) {
         setData(res.data?.data || []);
         // Hitung total halaman berdasarkan total data dari API
-        const totalData = res.data?.total || 0;
+        const totalData = res.data?.pagination.total || 0;
         setTotalPages(Math.ceil(totalData / 9));
       }
     } catch (error) {
-      console.error("Fetch error:", error);
       setData([]);
     } finally {
       setIsLoading(false);
@@ -72,6 +71,7 @@ export default function SchedulePage() {
         ? await scheduleApi.update(selectedId, formData) 
         : await scheduleApi.create(formData);
   
+      // Pastikan response sukses sesuai format API Anda (biasanya code 200)
       if (res.code === 200 || res.status === "OK") {
         handleCloseModal();
         Swal.fire({
@@ -83,9 +83,22 @@ export default function SchedulePage() {
           showConfirmButton: false,
         });
         fetchData();
+      } else {
+        // Jika response sukses secara HTTP tapi API mengembalikan code error (e.g. 502/400)
+        throw res; 
       }
-    } catch (error) {
-      Swal.fire({ title: 'Error', text: 'Something went wrong', icon: 'error' });
+    } catch (error: any) {
+      const errorMessage = error.data?.error || 
+                           error.response?.data?.data?.error || 
+                           error.message || 
+                           'Something went wrong';
+
+      Swal.fire({ 
+        title: 'Gagal!', 
+        text: errorMessage, 
+        icon: 'error',
+        confirmButtonColor: '#640D14'
+      });
     } finally {
       setIsLoading(false);
     }

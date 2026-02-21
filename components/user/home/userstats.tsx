@@ -29,11 +29,9 @@ export default function UserStats({ userName = "User", reformerCount = 0 }) {
         </Button>
       </div>
 
-      <div className="grid grid-cols-3 gap-4 bg-gray-50/50 p-6 rounded-3xl border border-gray-100">
+      <div className="grid grid-cols-1 gap-4 bg-gray-50/50 p-6 rounded-3xl border border-gray-100">
         {[
-          { label: "Reformer", count: reformerCount },
-          { label: "Chair", count: 0 },
-          { label: "Private", count: 0 },
+          { label: "Reformer", count: reformerCount }     
         ].map((item, i) => (
           <div key={i} className="text-center border-r last:border-0 border-gray-200">
             <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest mb-2">{item.label}</p>

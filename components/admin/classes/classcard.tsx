@@ -34,7 +34,7 @@ export const ClassCard = ({ item, onEdit, onDelete }: any) => {
       <div className="flex items-center gap-4 mb-6 text-gray-500">
         <div className="flex items-center gap-1.5 text-xs font-semibold">
           <Clock size={14} className="text-[#640D14]" />
-          {formatTime(item.start_time)}
+          {formatTime(item.start_time)} - {formatTime(item.end_time)}
         </div>
         <div className="flex items-center gap-1.5 text-xs font-semibold">
           <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
@@ -50,6 +50,12 @@ export const ClassCard = ({ item, onEdit, onDelete }: any) => {
         <div className="bg-gray-50 p-3 rounded-2xl border border-gray-100">
           <p className="text-[9px] font-black text-gray-400 uppercase mb-1">Room</p>
           <p className="text-xs font-bold text-[#38040E] truncate">{item.class_room}</p>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 gap-3 mb-6">
+        <div className="bg-gray-50 p-3 rounded-2xl border border-gray-100">
+          <p className="text-[9px] font-black text-gray-400 uppercase mb-1">Date</p>
+          <p className="text-xs font-bold text-[#38040E] truncate">{item.date}</p>
         </div>
       </div>
 

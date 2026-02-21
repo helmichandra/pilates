@@ -2,13 +2,29 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { coachApi } from '@/services/coachService';
-import { Search, Plus, UserCheck, Loader2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, Plus, Loader2, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useDebounce } from 'use-debounce';
 import Swal from 'sweetalert2';
 
 import { CoachCard } from '@/components/admin/coaches/CoachCard';
 import CoachModal from '@/components/admin/coaches/CoachModal';
+import { Skeleton } from "@/components/ui/skeleton"; // Asumsi menggunakan shadcn
+
+// Komponen Skeleton yang disesuaikan dengan desain CoachCard kamu
+const CoachSkeleton = () => (
+  <div className="bg-white p-6 rounded-[2rem] shadow-sm flex items-center gap-5 border border-gray-50">
+    <Skeleton className="w-20 h-20 rounded-2xl bg-gray-200" />
+    <div className="flex-1 space-y-3">
+      <Skeleton className="h-5 w-1/2 bg-gray-200" />
+      <Skeleton className="h-4 w-1/3 bg-gray-100" />
+      <div className="flex gap-2 pt-2">
+        <Skeleton className="h-8 w-20 rounded-lg bg-gray-100" />
+        <Skeleton className="h-8 w-20 rounded-lg bg-gray-100" />
+      </div>
+    </div>
+  </div>
+);
 
 export default function CoachesPage() {
   const [coaches, setCoaches] = useState<any[]>([]);
@@ -19,16 +35,25 @@ export default function CoachesPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearch] = useDebounce(searchQuery, 500);
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const LIMIT = 10;
 
   const fetchCoaches = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await coachApi.getAll(currentPage, debouncedSearch, 10);
+      const res = await coachApi.getAll(currentPage, debouncedSearch, LIMIT);
       if (res.code === 200) {
-        setCoaches(res.data.data || []);
+        // Ambil data dan pastikan fallback ke array kosong jika null
+        setCoaches(res.data?.data || []);
+        
+        // HITUNG TOTAL HALAMAN DI FRONTEND
+        const totalItems = res.data?.pagination?.total || 0;
+        const calculatedPages = Math.ceil(totalItems / LIMIT);
+        setTotalPages(calculatedPages || 1);
       }
     } catch (error) {
       console.error(error);
+      setCoaches([]);
     } finally {
       setLoading(false);
     }
@@ -37,6 +62,11 @@ export default function CoachesPage() {
   useEffect(() => {
     fetchCoaches();
   }, [fetchCoaches]);
+
+  // Reset ke halaman 1 saat user mencari sesuatu
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [debouncedSearch]);
 
   const handleDelete = async (id: number) => {
     const result = await Swal.fire({
@@ -67,6 +97,7 @@ export default function CoachesPage() {
   return (
     <div className="min-h-screen bg-[#F8F9FA] p-6 md:p-10">
       <div className="max-w-6xl mx-auto">
+        {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
           <div>
             <h1 className="text-4xl font-black text-[#38040E] uppercase tracking-tighter">Coaches</h1>
@@ -80,6 +111,7 @@ export default function CoachesPage() {
           </button>
         </div>
 
+        {/* Search Bar */}
         <div className="relative mb-8">
           <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
           <input 
@@ -87,32 +119,64 @@ export default function CoachesPage() {
             placeholder="Cari nama coach..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-14 pr-6 py-5 bg-white border-none rounded-[2rem] shadow-sm font-bold text-sm focus:ring-4 focus:ring-[#640D14]/5 outline-none"
+            className="w-full pl-14 pr-6 py-5 bg-white border-none rounded-[2rem] shadow-sm font-bold text-sm focus:ring-4 focus:ring-[#640D14]/5 outline-none transition-all"
           />
         </div>
 
-        {loading && coaches.length === 0 ? (
-          <div className="flex justify-center py-24"><Loader2 className="animate-spin text-[#640D14]" size={40} /></div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <AnimatePresence>
+        {/* Content Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 min-h-[400px]">
+          {loading ? (
+            /* Tampilkan 6 Skeleton saat loading */
+            Array.from({ length: 6 }).map((_, i) => <CoachSkeleton key={i} />)
+          ) : (coaches?.length ?? 0) > 0 ? (
+            <AnimatePresence mode="popLayout">
               {coaches.map((coach) => (
-                <CoachCard 
-                  key={coach.id} 
-                  coach={coach} 
-                  onEdit={(id: number) => { setSelectedId(id); setIsModalOpen(true); }}
-                  onDelete={handleDelete}
-                />
+                <motion.div
+                  key={coach.id}
+                  layout
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                >
+                  <CoachCard 
+                    coach={coach} 
+                    onEdit={(id: number) => { setSelectedId(id); setIsModalOpen(true); }}
+                    onDelete={handleDelete}
+                  />
+                </motion.div>
               ))}
             </AnimatePresence>
+          ) : (
+            <div className="col-span-full flex flex-col items-center justify-center py-20 text-gray-400">
+              <p className="font-bold uppercase tracking-widest text-xs">No Coaches Found</p>
+            </div>
+          )}
+        </div>
+
+        {/* Pagination Controls */}
+        {!loading && totalPages > 1 && (
+          <div className="flex justify-center items-center mt-12 gap-5">
+            <button 
+              onClick={() => setCurrentPage(p => Math.max(1, p - 1))} 
+              disabled={currentPage === 1}
+              className="p-4 bg-white rounded-2xl shadow-sm disabled:opacity-20 hover:bg-gray-50 transition-all border border-gray-100"
+            >
+              <ChevronLeft className="text-[#640D14]" />
+            </button>
+            
+            <div className="bg-[#640D14] text-white px-8 py-3 rounded-2xl font-black text-xs tracking-tighter shadow-lg">
+              PAGE {currentPage} / {totalPages}
+            </div>
+
+            <button 
+              onClick={() => setCurrentPage(p => p + 1)} 
+              disabled={currentPage >= totalPages}
+              className="p-4 bg-white rounded-2xl shadow-sm disabled:opacity-20 hover:bg-gray-50 transition-all border border-gray-100"
+            >
+              <ChevronRight className="text-[#640D14]" />
+            </button>
           </div>
         )}
-
-        {/* Sederhanakan pagination untuk testing */}
-        <div className="flex justify-center mt-10 gap-4">
-           <button onClick={() => setCurrentPage(p => Math.max(1, p - 1))} className="p-4 bg-white rounded-2xl shadow-sm"><ChevronLeft /></button>
-           <button onClick={() => setCurrentPage(p => p + 1)} className="p-4 bg-white rounded-2xl shadow-sm"><ChevronRight /></button>
-        </div>
 
         <CoachModal 
           isOpen={isModalOpen} 

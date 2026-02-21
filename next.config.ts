@@ -6,8 +6,7 @@ if (!base) throw new Error("NEXT_PUBLIC_API_BASE is missing");
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   async rewrites() {
-    return [
-      // Auth Endpoints
+    return [      
       { source: "/api/login", destination: `${base}/auth/login` },  
       { source: "/api/register", destination: `${base}/auth/register` },
             
@@ -29,8 +28,9 @@ const nextConfig: NextConfig = {
       { source: "/api/users/profile/change_password", destination: `${base}/users/profile/change_password` },
       { source: "/api/coaches", destination: `${base}/coaches` },
       { source: "/api/coaches/:path*",  destination: `${base}/coaches/:path*` },
-      { source: "/api/users/:path*", destination: `${base}/users/:path*` },
-
+      { source: "/api/users/:path*", destination: `${base}/users/:path*` },      
+      { source: "/api/item_topup/masters/id/:id", destination: `${base}/item_topup/masters/id/:id` },
+      { source: "/api/item_topup/masters", destination: `${base}/item_topup/masters` },
     ];
   },
 };
