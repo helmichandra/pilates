@@ -51,7 +51,7 @@ const Services: React.FC = () => {
       }
     } else if (serviceName === Category.PADEL) {
       // Arahkan ke link eksternal
-      window.open('https://ayo.co.id/', '_blank');
+      window.open('https://ayo.co.id/v/fix-padel', '_blank');
     }
   };
 
