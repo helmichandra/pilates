@@ -10,13 +10,7 @@ import { Eye, EyeOff, ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { motion } from "framer-motion"
 // Import Select untuk Gender agar user experience lebih baik
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+
 
 export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false)
@@ -27,7 +21,6 @@ export default function RegisterForm() {
     email: "",
     phone: "",
     password: "",
-    gender: "MALE", // Default value
     date_of_birth: "" // Format: YYYY-MM-DD
   })
   
@@ -36,8 +29,15 @@ export default function RegisterForm() {
   const router = useRouter()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value })
-  }
+    const { id, value } = e.target;
+  
+    if (id === "phone") {
+      const numericValue = value.replace(/\D/g, "");
+      setFormData({ ...formData, [id]: numericValue });
+    } else {
+      setFormData({ ...formData, [id]: value });
+    }
+  };
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -115,7 +115,7 @@ export default function RegisterForm() {
               {/* First Name & Last Name */}
               <div className="space-y-2">
                 <Label htmlFor="first_name" className="text-xs font-bold uppercase tracking-widest text-gray-500 ml-1">First Name</Label>
-                <Input id="first_name" required className="h-12 px-5 bg-gray-50 rounded-xl" placeholder="Fisrt Name" value={formData.first_name} onChange={handleChange} />
+                <Input id="first_name" required className="h-12 px-5 bg-gray-50 rounded-xl" placeholder="First Name" value={formData.first_name} onChange={handleChange} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="last_name" className="text-xs font-bold uppercase tracking-widest text-gray-500 ml-1">Last Name</Label>
@@ -128,23 +128,22 @@ export default function RegisterForm() {
                 <Input id="username" required className="h-12 px-5 bg-gray-50 rounded-xl" placeholder="Username" value={formData.username} onChange={handleChange} />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="phone" className="text-xs font-bold uppercase tracking-widest text-gray-500 ml-1">Phone Number</Label>
-                <Input id="phone" required type="tel" className="h-12 px-5 bg-gray-50 rounded-xl" placeholder="0812..." value={formData.phone} onChange={handleChange} />
+                <Label htmlFor="phone" className="text-xs font-bold uppercase tracking-widest text-gray-500 ml-1">
+                  Phone Number
+                </Label>
+                <Input 
+                  id="phone" 
+                  required 
+                  type="tel" 
+                  inputMode="numeric" // Memunculkan numpad di HP
+                  className="h-12 px-5 bg-gray-50 rounded-xl focus:ring-[#640D14] focus:border-[#640D14]" 
+                  placeholder="0812..." 
+                  value={formData.phone} 
+                  onChange={handleChange} 
+                />
               </div>
 
-              {/* Gender & DOB */}
-              <div className="space-y-2">
-                <Label className="text-xs font-bold uppercase tracking-widest text-gray-500 ml-1">Gender</Label>
-                <Select onValueChange={(val) => setFormData({...formData, gender: val})} defaultValue={formData.gender}>
-                  <SelectTrigger className="h-12 bg-gray-50 rounded-xl">
-                    <SelectValue placeholder="Select Gender" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="MALE">MALE</SelectItem>
-                    <SelectItem value="FEMALE">FEMALE</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+
               <div className="space-y-2">
                 <Label htmlFor="date_of_birth" className="text-xs font-bold uppercase tracking-widest text-gray-500 ml-1">Date of Birth</Label>
                 <Input id="date_of_birth" required type="date" className="h-12 px-5 bg-gray-50 rounded-xl" value={formData.date_of_birth} onChange={handleChange} />
