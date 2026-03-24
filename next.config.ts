@@ -5,6 +5,15 @@ if (!base) throw new Error("NEXT_PUBLIC_API_BASE is missing");
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  // TAMBAHKAN INI UNTUK MEMBUKA AKSES GAMBAR UNSPLASH
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+    ],
+  },
   async rewrites() {
     return [      
       { source: "/api/login", destination: `${base}/auth/login` },  

@@ -1,81 +1,225 @@
 "use client";
-import { Check } from 'lucide-react';
+import React, { useState } from 'react'; // Tambahkan useState
 import { useRouter } from "next/navigation";
+import { motion, AnimatePresence, Variants } from "framer-motion";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, EffectFade, Pagination } from 'swiper/modules';
+import type { Swiper as SwiperType } from 'swiper'; // Import tipe Swiper
+import { ArrowRight, MapPin } from 'lucide-react';
+import Image from "next/image";
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/effect-fade';
+import 'swiper/css/pagination';
+
+interface SlideData {
+  id: number;
+  image: string;
+  tagline: string;
+  titlePart1: string;
+  titlePart2: string;
+  titlePart3: string;
+  description: string;
+  primaryBtn: string;
+  secondaryBtn: string;
+  category: string;
+}
 
 export default function Hero() {
-
   const router = useRouter();
+  // State untuk melacak slide mana yang sedang aktif
+  const [activeIndex, setActiveIndex] = useState(0);
+
   const handleBooking = () => {
     router.push("/dashboard-user/booking");
   };
-    return (
-    <section id="home" className="pt-24 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-50 to-white overflow-hidden">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6 opacity-0 animate-[fadeInLeft_0.8s_ease-out_forwards]">
-            <div className="inline-block">
-              <span className="text-xs text-red-600 font-semibold tracking-wide">Kreo • Ciledug • Joglo</span>
-            </div>
-            
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-tight">
-              Move Better.<br />
-              <span className="text-red-600 italic">Feel Stronger.</span><br />
-              Live Fixed.
-            </h1>
-            
-            <p className="text-gray-600 text-base sm:text-lg max-w-lg leading-relaxed">
-            FixClub. A Reformer Pilates studio specializing in posture improvement and enhancing your quality of life, guided by the best local instructors.
-            </p>
-            
-            <div className="flex flex-wrap gap-4">
-              <button 
-              onClick={handleBooking}
-              className="bg-red-600 text-white px-8 py-3.5 rounded-full hover:bg-red-700 transition transform hover:scale-105 shadow-lg hover:shadow-xl font-bold cursor-pointer">
-                Book a Class
-              </button>
-              <button className="bg-white text-gray-900 px-8 py-3.5 rounded-full border-2 border-gray-200 hover:border-gray-900 transition font-bold cursor-pointer">
-                See Packages
-              </button>
-            </div>
-            
-            <div className="flex flex-wrap gap-4 sm:gap-6 pt-4">
-              <div className="flex items-center gap-2">
-                <Check className="w-5 h-5 text-green-600" strokeWidth={3} />
-                <span className="text-sm text-gray-700">Certified Local Instructors</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Check className="w-5 h-5 text-green-600" strokeWidth={3} />
-                <span className="text-sm text-gray-700">Beginner Friendly</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Check className="w-5 h-5 text-green-600" strokeWidth={3} />
-                <span className="text-sm text-gray-700">Small Group</span>
-              </div>
-            </div>
-          </div>
-          
-          <div className="relative group">
-            <div className="aspect-[4/5] bg-white p-4 rounded-[3.5rem] shadow-2xl relative overflow-hidden transition-transform duration-700 group-hover:scale-[1.01]">
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent z-10"></div>
-              <img 
-                src="/media/landing-page/pilates-women.avif" 
-                alt="Fixclub Reformer Pilates" 
-                className="object-cover w-full h-full rounded-[3rem] transition-all duration-1000 group-hover:scale-110"
+
+  const slides: SlideData[] = [
+    {
+      id: 1,
+      // GANTI: Gambar AI Pilates Luxury Studio
+      image: '/media/landing-page/pilates.png',
+      tagline: 'Fix Pilates Studio',
+      titlePart1: 'Move',
+      titlePart2: 'Better',
+      titlePart3: 'Precise Movement.',
+      description: 'Elevate your posture and core strength with our premium Reformer Pilates sessions, guided by certified local experts.',
+      primaryBtn: 'Book Pilates',
+      secondaryBtn: 'See Packages',
+      category: 'REFORMER'
+    },
+    {
+      id: 2,
+      // GANTI: Gambar Padel Court Panoramic (Indoor/Luxury)
+      image: '/media/landing-page/padel.png',
+      tagline: 'Fix Padel Court',
+      titlePart1: 'Play',
+      titlePart2: 'Harder',
+      titlePart3: 'Intense Game.',
+      description: 'Experience the thrill of Padel on our international standard panoramic courts. Perfect for all skill levels.',
+      primaryBtn: 'Book Court',
+      secondaryBtn: 'Rent Racket',
+      category: 'PANORAMIC'
+    },
+    {
+      id: 3,
+      image: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2500&auto=format&fit=crop', 
+      tagline: 'Fix Cafe & Lounge',
+      titlePart1: 'Rest',
+      titlePart2: 'Smarter',
+      titlePart3: 'Healthy Fuel.',
+      description: 'Recharge after your session with specialty coffee, protein shakes, and healthy snacks in our exclusive member lounge.',
+      primaryBtn: 'See Menu',
+      secondaryBtn: 'Visit Us',
+      category: 'WELLNESS'
+    }
+  ];
+
+  // VARIANTS BARU UNTUK TRANSISI YANG LEBIH SMOOTH
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.3,
+      }
+    },
+  };
+
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } 
+    }
+  };
+
+  return (
+    <section id="home" className="relative h-screen w-full overflow-hidden bg-black">
+      <Swiper
+        modules={[Autoplay, EffectFade, Pagination]}
+        effect={'fade'}
+        speed={1200} // Sedikit diperlambat agar transisi lebih elegan
+        autoplay={{
+          delay: 5500, // Beri waktu lebih lama untuk membaca
+          disableOnInteraction: false,
+        }}
+        pagination={{
+          clickable: true,
+          renderBullet: (index, className) => {
+            return `<span class="${className} !bg-white/40 !w-12 !h-1 !rounded-full custom-bullet"></span>`;
+          },
+        }}
+        loop={true}
+        // SOLUSI UTAMA: Update state activeIndex saat slide berubah
+        onSlideChange={(swiper: SwiperType) => setActiveIndex(swiper.realIndex)}
+        className="h-full w-full"
+      >
+        {slides.map((slide, index) => (
+          <SwiperSlide key={slide.id} className="relative h-full w-full overflow-hidden">
+            <div className="absolute inset-0 h-full w-full">
+              <Image 
+                src={slide.image} 
+                alt={slide.tagline}
+                fill
+                priority={index === 0} // Priority hanya untuk slide pertama
+                className="object-cover transition-transform duration-[12000ms] scale-110 active-slide-zoom"
               />
-              <div className="absolute bottom-10 left-10 right-10 z-20">
-                <div className="bg-white/90 backdrop-blur-xl p-8 rounded-3xl shadow-2xl border border-white/50">
-                  <p className="text-primary font-black text-[10px] uppercase tracking-widest mb-2">Exclusive Studio</p>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-1 font-display tracking-tight leading-none">Precise Movement</h3>
-                  <p className="text-gray-600 text-sm font-medium leading-relaxed mt-2">Dapatkan perhatian personal dari instruktur lokal tersertifikasi kami di Kreo.</p>
-                </div>
-              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-[#38040E]/30 z-10"></div>
             </div>
-            {/* Background elements */}
-            <div className="absolute -top-10 -right-10 w-64 h-64 bg-primary/5 rounded-full filter blur-3xl"></div>
-            <div className="absolute -bottom-10 -left-10 w-64 h-64 bg-secondary/10 rounded-full filter blur-3xl"></div>
-          </div>
-        </div>
-      </div>
+
+            <div className="relative z-20 h-full max-w-7xl mx-auto px-6 lg:px-8 flex flex-col justify-center pt-24 pb-32">
+              
+              {/* Gunakan AnimatePresence agar teks slide lama bisa 'exit' dulu */}
+              <AnimatePresence mode="wait">
+                {/* Hanya render konten jika slide ini adalah activeIndex */}
+                {activeIndex === index && (
+                  <motion.div 
+                    key={slide.id} // Key harus unik per slide
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="hidden"
+                    className="max-w-3xl space-y-8"
+                  >
+                    {/* TAGLINE */}
+                    <motion.div variants={itemVariants} className="flex items-center gap-6">
+                      <div className="flex items-center gap-2.5 bg-white/10 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/10">
+                        <span className="relative flex h-2 w-2">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-red-600"></span>
+                        </span>
+                        <span className="text-[10px] text-white font-black uppercase tracking-[0.2em]">
+                          {slide.tagline}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-white/50 text-xs font-bold uppercase tracking-widest">
+                        <MapPin size={14} /> Kreo • Ciledug
+                      </div>
+                    </motion.div>
+                    
+                    {/* TITLE */}
+                    <motion.h1 
+                      variants={itemVariants}
+                      className="text-5xl sm:text-7xl lg:text-8xl font-black text-white leading-[0.9] tracking-tighter uppercase italic"
+                    >
+                      {slide.titlePart1} <span className="text-red-600">{slide.titlePart2}.</span><br />
+                      <span className="not-italic text-white/90 text-4xl sm:text-6xl lg:text-7xl">
+                        {slide.titlePart3}
+                      </span>
+                    </motion.h1>
+                    
+                    {/* DESCRIPTION */}
+                    <motion.p 
+                      variants={itemVariants}
+                      className="text-white/70 text-base sm:text-lg max-w-xl leading-relaxed font-medium"
+                    >
+                      {slide.description}
+                    </motion.p>
+                    
+                    {/* BUTTONS */}
+                    <motion.div 
+                      variants={itemVariants}
+                      className="flex flex-wrap gap-5 pt-4"
+                    >
+                      <button 
+                        onClick={handleBooking}
+                        className="bg-[#640D14] text-white px-10 py-4 rounded-full font-black uppercase text-[10px] tracking-widest flex items-center gap-3 shadow-2xl shadow-[#640D14]/20 hover:bg-black transition-all transform active:scale-95 cursor-pointer"
+                      >
+                        {slide.primaryBtn} <ArrowRight size={16} />
+                      </button>
+                      <button className="bg-white/5 text-white px-10 py-4 rounded-full border border-white/10 hover:bg-white/10 transition-all font-black uppercase text-[10px] tracking-widest active:scale-95 cursor-pointer backdrop-blur-sm">
+                        {slide.secondaryBtn}
+                      </button>
+                    </motion.div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* FLOATING LABEL (Tetap di luar AnimatePresence agar tidak ikut hilang)
+              <div className="absolute bottom-20 right-8 lg:right-16 z-30 hidden md:block">
+                <motion.div 
+                  key={`label-${slide.id}`}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={activeIndex === index ? { opacity: 1, x: 0 } : {}}
+                  transition={{delay: 0.6}}
+                  className="p-4 bg-white/5 backdrop-blur-xl rounded-3xl border border-white/10 text-center w-32 shadow-2xl"
+                >
+                  <p className="text-red-600 font-black text-[9px] uppercase tracking-widest mb-1">FixClub Category</p>
+                  <h3 className="text-3xl font-black text-white italic tracking-tighter leading-none">{slide.category}</h3>
+                </motion.div>
+              </div> */}
+
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+
+      <div className="absolute -top-40 -right-40 w-96 h-96 bg-[#640D14]/10 rounded-full filter blur-[100px] z-0 pointer-events-none"></div>
+      <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-[#640D14]/10 rounded-full filter blur-[100px] z-0 pointer-events-none"></div>
     </section>
   );
-};
+}
