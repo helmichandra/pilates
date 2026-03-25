@@ -9,7 +9,7 @@ const services = [
     id: "padel",
     tagline: "Dynamic. Social. New Experience.",
     title: "Padel Court",
-    description: "Nikmati pengalaman bermain padel standar internasional FIP dengan teknologi Super Flat Surface untuk pantulan bola presisi, pergerakan stabil, dan respons optimal di setiap rally.",
+    description: "Nikmati pengalaman bermain padel standar internasional FIP dengan teknologi Super Flat Surface untuk pantulan bola presisi, pergerakan stabil, dan respons optimal di setiap rally. Fix Club Padel Menggunakan teknologi Super Flat Surface, setiap permainan terasa lebih presisi dengan pantulan bola yang konsisten, pergerakan yang stabil, dan respons yang optimal di setiap rally. Dirancang untuk semua level, dari pemula hingga berpengalaman — menghadirkan permainan yang smooth, kompetitif, dan berkelas dalam satu pengalaman.",
     image: "/media/landing-page/padel.png",
     icon: Zap,
     features: ["Standard FIP", "Super Flat Surface", "All Skill Levels"]
@@ -18,7 +18,7 @@ const services = [
     id: "pilates",
     tagline: "Balance. Strength. Control.",
     title: "Pilates Studio",
-    description: "Temukan keseimbangan tubuh melalui sesi reformer pilates yang dirancang untuk meningkatkan kekuatan, fleksibilitas, dan postur tubuh dipandu oleh instruktur profesional.",
+    description: "Temukan keseimbangan tubuh melalui sesi reformer pilates yang dirancang untuk meningkatkan kekuatan, fleksibilitas, dan postur tubuh dipandu oleh instruktur profesional. Dipandu oleh instruktur profesional dalam ruang yang tenang dan eksklusif, setiap sesi memberikan pengalaman yang personal, fokus, dan menyeluruh — membantu Anda bergerak lebih baik dan merasa lebih optimal.",
     image: "/media/landing-page/pilates.png",
     icon: Heart,
     features: ["Professional Instructor", "Private Session", "Reformer Equipment"]
@@ -27,7 +27,7 @@ const services = [
     id: "multipurpose",
     tagline: "Flexible. Private. Refined.",
     title: "Multipurpose Studio",
-    description: "Ruang serbaguna eksklusif yang dirancang untuk menghadirkan fleksibilitas berbagai aktivitas mulai dari yoga, private session, hingga kelas komunitas.",
+    description: "Ruang serbaguna eksklusif yang dirancang untuk menghadirkan fleksibilitas berbagai aktivitas mulai dari yoga, private session, hingga kelas komunitas. Dengan suasana yang tenang, desain modern, dan ambience yang eksklusif, studio ini memberikan pengalaman yang lebih personal, nyaman, dan fokus di setiap sesi. Dirancang untuk beradaptasi dengan berbagai kebutuhan, Multipurpose Studio di FIXCLUB menjadi ruang ideal untuk bergerak, berlatih, dan terhubung — dalam lingkungan yang berkelas dan terkurasi.",
     image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=2000&auto=format&fit=crop", 
     icon: Layout,
     features: ["Yoga & Meditation", "Community Class", "Private Events"]

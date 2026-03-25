@@ -126,7 +126,7 @@ const About: React.FC = () => {
               className="p-6 bg-[#38040E] rounded-[2rem] text-center"
             >
               <p className="text-white font-black uppercase text-[10px] tracking-[0.3em]">
-                "Ini Bukan Sekadar Olahraga. Ini Cara Hidup."
+                "Bukan Sekadar Olahraga. Ini Cara Hidup."
               </p>
             </motion.div>
           </div>
