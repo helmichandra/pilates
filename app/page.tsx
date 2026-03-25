@@ -4,8 +4,9 @@ import Hero from "@/components/landingPage/hero-section";
 // import StudioCategories from "@/components/landingPage/studio-categories";
 import QualitySection from "@/components/landingPage/qualify-section";
 import FacilitySection from "@/components/landingPage/facility-section";
+import Service from "@/components/landingPage/service-section";
 import {BookingSection} from "@/components/landingPage/booking";
-// import {Testimonials} from "@/components/landingPage/testimoni";
+import {FAQSection} from "@/components/landingPage/testimoni";
 import Footer from "@/components/landingPage/landing-footer";
 
 export default function FixclubLanding() {
@@ -50,9 +51,10 @@ export default function FixclubLanding() {
         <Hero />
         {/* <StudioCategories /> */}
         <QualitySection />
+        <Service />
         <FacilitySection />
         <BookingSection />
-        {/* <Testimonials /> */}
+        <FAQSection />
         <Footer />
       </div>
     );

@@ -38,39 +38,37 @@ export default function Hero() {
   const slides: SlideData[] = [
     {
       id: 1,
-      // GANTI: Gambar AI Pilates Luxury Studio
-      image: '/media/landing-page/pilates.png',
-      tagline: 'Fix Pilates Studio',
-      titlePart1: 'Move',
-      titlePart2: 'Better',
-      titlePart3: 'Precise Movement.',
-      description: 'Elevate your posture and core strength with our premium Reformer Pilates sessions, guided by certified local experts.',
-      primaryBtn: 'Book Pilates',
-      secondaryBtn: 'See Packages',
-      category: 'REFORMER'
+      image: '/media/landing-page/padel.png',
+      tagline: 'Get Your FIX • Fix Padel Court', // Menggunakan Tagline baru
+      titlePart1: 'Play',
+      titlePart2: 'Harder',
+      titlePart3: 'One-Stop Sport.',
+      description: 'Lebih dari sekadar klub olahraga — nikmati fasilitas Padel berstandar internasional dalam ruang yang modern dan penuh energi.',
+      primaryBtn: 'Book Court',
+      secondaryBtn: 'See Facility',
+      category: 'PANORAMIC'
     },
     {
       id: 2,
-      // GANTI: Gambar Padel Court Panoramic (Indoor/Luxury)
-      image: '/media/landing-page/padel.png',
-      tagline: 'Fix Padel Court',
-      titlePart1: 'Play',
-      titlePart2: 'Harder',
-      titlePart3: 'Intense Game.',
-      description: 'Experience the thrill of Padel on our international standard panoramic courts. Perfect for all skill levels.',
-      primaryBtn: 'Book Court',
-      secondaryBtn: 'Rent Racket',
-      category: 'PANORAMIC'
+      image: '/media/landing-page/pilates.png',
+      tagline: 'Get Your FIX • Fix Pilates Studio',
+      titlePart1: 'Move',
+      titlePart2: 'Better',
+      titlePart3: 'Precise Movement.',
+      description: 'Temukan keseimbangan hidup melalui gerakan yang presisi. Studio Pilates & Yoga kami dirancang untuk membantu Anda recharge total.',
+      primaryBtn: 'Book Session',
+      secondaryBtn: 'Our Studio',
+      category: 'REFORMER'
     },
     {
       id: 3,
       image: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2500&auto=format&fit=crop', 
-      tagline: 'Fix Cafe & Lounge',
+      tagline: 'Get Your FIX • Fix Cafe',
       titlePart1: 'Rest',
       titlePart2: 'Smarter',
-      titlePart3: 'Healthy Fuel.',
-      description: 'Recharge after your session with specialty coffee, protein shakes, and healthy snacks in our exclusive member lounge.',
-      primaryBtn: 'See Menu',
+      titlePart3: 'Social Space.',
+      description: 'Lengkapi gaya hidup aktif Anda di Café kami. Tempat sempurna untuk bersosialisasi dan menikmati healthy fuel setelah berlatih.',
+      primaryBtn: 'Explore Menu',
       secondaryBtn: 'Visit Us',
       category: 'WELLNESS'
     }
