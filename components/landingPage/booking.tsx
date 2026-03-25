@@ -9,7 +9,7 @@ interface Package {
   label: string;
   save?: string;
   popular?: boolean;
-  validity: string; // Tambahan untuk penjelasan masa berlaku
+  validity: string;
 }
 
 export const BookingSection = () => {
@@ -39,72 +39,80 @@ export const BookingSection = () => {
   return (
     <section id="booking" className="py-24 px-4 sm:px-6 lg:px-8 bg-[#FDF8F8]">
       <div className="max-w-7xl mx-auto">
+        
+        {/* Header Section - Cormorant Garamond */}
         <div className="text-center mb-20">
-          <h2 className="text-4xl sm:text-5xl font-black mb-4 text-[#38040E] tracking-tighter">BOOKING & CREDITS</h2>
-          <div className="w-20 h-1.5 bg-[#640D14] mx-auto rounded-full"></div>
+          <div className="inline-flex items-center gap-2 text-[#640D14] font-sans font-black uppercase text-[10px] tracking-[0.3em] mb-4">
+            <span className="w-10 h-[1px] bg-[#640D14]"></span>
+            Reservations
+          </div>
+          <h2 className="font-serif text-5xl sm:text-7xl font-bold text-[#38040E] tracking-tighter leading-none uppercase italic">
+            Booking & <span className="text-[#640D14] not-italic">Credits.</span>
+          </h2>
+          <div className="w-20 h-1 bg-[#640D14]/20 mx-auto mt-8 rounded-full"></div>
         </div>
         
         <div className="grid lg:grid-cols-2 gap-10 max-w-6xl mx-auto">
           {/* LEFT: RESERVATION FORM */}
-          <div className="bg-white rounded-[2.5rem] shadow-[0_20px_50px_rgba(100,13,20,0.05)] p-10 border border-gray-100 flex flex-col justify-between">
+          <div className="bg-white rounded-[3rem] shadow-[0_20px_50px_rgba(100,13,20,0.05)] p-10 lg:p-12 border border-gray-100 flex flex-col justify-between">
             <div>
-              <h3 className="text-2xl font-black mb-8 text-[#38040E] uppercase tracking-tight">Reserve Your Spot</h3>
+              <h3 className="font-serif text-3xl font-bold mb-10 text-[#38040E] uppercase italic tracking-tight">Reserve Your Spot</h3>
               
-              <div className="space-y-7">
+              <div className="space-y-8">
                 <div>
-                  <label className="block text-[10px] font-black text-gray-400 mb-2 uppercase tracking-[0.2em]">Select Category</label>
-                  <div className="bg-gray-50 px-5 py-4 rounded-2xl font-bold text-[#38040E] border border-gray-100 flex justify-between items-center">
+                  <label className="block font-sans text-[10px] font-black text-gray-400 mb-3 uppercase tracking-[0.2em]">Select Category</label>
+                  <div className="bg-gray-50 px-6 py-5 rounded-[1.5rem] font-sans font-bold text-[#38040E] border border-gray-100 flex justify-between items-center group cursor-pointer hover:border-[#640D14]/30 transition-all">
                     Reformer (Group Class)
-                    <span className="text-[10px] bg-green-100 text-green-700 px-2 py-1 rounded-md uppercase">Ready</span>
+                    <span className="font-sans text-[9px] font-black bg-green-100 text-green-700 px-3 py-1.5 rounded-lg uppercase tracking-wider">Ready</span>
                   </div>
                 </div>
                 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-[10px] font-black text-gray-400 mb-2 uppercase tracking-[0.2em]">Date</label>
-                    <div className="relative">
+                    <label className="block font-sans text-[10px] font-black text-gray-400 mb-3 uppercase tracking-[0.2em]">Date</label>
+                    <div className="relative group">
                       <input 
                         type="text" 
                         value={date}
                         onChange={(e) => setDate(e.target.value)}
-                        className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl font-bold text-[#38040E] focus:ring-2 focus:ring-[#640D14]/10 focus:border-[#640D14] outline-none transition-all placeholder:text-gray-300"
+                        className="w-full px-6 py-5 bg-gray-50 border border-gray-100 rounded-[1.5rem] font-sans font-bold text-[#38040E] focus:ring-2 focus:ring-[#640D14]/10 focus:border-[#640D14] outline-none transition-all placeholder:text-gray-300"
                         placeholder="dd/mm/yyyy"
                       />
-                      <Calendar className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                      <Calendar className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#640D14] transition-colors" size={18} />
                     </div>
                   </div>
                   
                   <div>
-                    <label className="block text-[10px] font-black text-gray-400 mb-2 uppercase tracking-[0.2em]">Time</label>
-                    <div className="relative">
+                    <label className="block font-sans text-[10px] font-black text-gray-400 mb-3 uppercase tracking-[0.2em]">Time</label>
+                    <div className="relative group">
                       <input 
                         type="text" 
                         value={time}
                         onChange={(e) => setTime(e.target.value)}
-                        className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl font-bold text-[#38040E] focus:ring-2 focus:ring-[#640D14]/10 focus:border-[#640D14] outline-none transition-all"
+                        className="w-full px-6 py-5 bg-gray-50 border border-gray-100 rounded-[1.5rem] font-sans font-bold text-[#38040E] focus:ring-2 focus:ring-[#640D14]/10 focus:border-[#640D14] outline-none transition-all"
                       />
-                      <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                      <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#640D14] transition-colors" size={18} />
                     </div>
                   </div>
                 </div>
 
-                <div className="p-4 bg-blue-50 rounded-2xl flex gap-3 items-start border border-blue-100">
-                  <Info className="text-blue-500 shrink-0 mt-0.5" size={16} />
-                  <p className="text-[11px] text-blue-700 leading-relaxed font-medium">
+                <div className="p-5 bg-blue-50/50 rounded-[1.5rem] flex gap-4 items-start border border-blue-100/50">
+                  <Info className="text-blue-500 shrink-0 mt-1" size={16} />
+                  <p className="font-sans text-[11px] text-blue-700 leading-relaxed font-medium">
                     Jadwal kelas dapat berubah sewaktu-waktu. Pastikan saldo kredit Anda mencukupi sebelum melakukan reservasi.
                   </p>
                 </div>
               </div>
             </div>
             
-            <div className="mt-10 space-y-4">
+            <div className="mt-12 space-y-5">
               <button 
                 onClick={handleBooking}
-                className="w-full bg-[#640D14] text-white py-5 rounded-[1.25rem] font-black uppercase text-sm tracking-widest hover:bg-black transition-all transform active:scale-95 shadow-xl shadow-[#640D14]/20 cursor-pointer">
+                className="w-full bg-[#640D14] text-white py-6 rounded-[1.5rem] font-sans font-black uppercase text-[11px] tracking-[0.2em] hover:bg-black transition-all transform active:scale-95 shadow-xl shadow-[#640D14]/20 cursor-pointer">
                 Continue to Booking
               </button>
               
-              <div className="flex items-center justify-center gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+              <div className="flex items-center justify-center gap-2 font-sans text-[10px] font-bold text-gray-400 uppercase tracking-widest">
                 <ShieldCheck size={14} className="text-green-500" />
                 Secure Checkout by Midtrans
               </div>
@@ -112,36 +120,36 @@ export const BookingSection = () => {
           </div>
           
           {/* RIGHT: CREDIT PACKAGES */}
-          <div className="space-y-6">
-            <div className="bg-white rounded-[2.5rem] shadow-[0_20px_50px_rgba(100,13,20,0.05)] p-10 border border-gray-100">
-              <h3 className="text-2xl font-black mb-8 text-[#38040E] uppercase tracking-tight">Credit Packages</h3>
+          <div className="space-y-8">
+            <div className="bg-white rounded-[3rem] shadow-[0_20px_50px_rgba(100,13,20,0.05)] p-10 lg:p-12 border border-gray-100">
+              <h3 className="font-serif text-3xl font-bold mb-10 text-[#38040E] uppercase italic tracking-tight">Credit Packages</h3>
               
-              <div className="space-y-4">
+              <div className="space-y-5">
                 {packages.map((pkg, idx) => (
                   <div 
                     key={idx}
-                    className={`relative border-2 rounded-2xl p-6 transition-all duration-300 cursor-pointer ${
+                    className={`relative border-2 rounded-[1.5rem] p-8 transition-all duration-500 cursor-pointer ${
                       pkg.popular 
                         ? 'border-[#640D14] bg-[#FDF8F8] shadow-lg ring-1 ring-[#640D14]' 
-                        : 'border-gray-50 bg-gray-50/50 hover:border-gray-200 hover:bg-white'
+                        : 'border-gray-50 bg-gray-50/50 hover:border-[#640D14]/20 hover:bg-white'
                     }`}
                   >
                     <div className="flex justify-between items-center">
                       <div>
-                        <div className="text-2xl font-black text-[#38040E] leading-none mb-1">{pkg.sessions} {pkg.label}</div>
-                        <div className="text-[10px] font-black text-gray-400 uppercase tracking-wider">Validity: {pkg.validity}</div>
+                        <div className="font-serif text-3xl font-bold text-[#38040E] leading-none mb-2 italic">{pkg.sessions} <span className="text-xl not-italic font-sans font-black opacity-30">{pkg.label}</span></div>
+                        <div className="font-sans text-[9px] font-black text-gray-400 uppercase tracking-widest">Validity: {pkg.validity}</div>
                         {pkg.save && (
-                          <div className="text-[10px] bg-[#640D14] text-white font-black px-2 py-0.5 rounded mt-2 inline-block uppercase tracking-tighter italic">
+                          <div className="font-sans text-[9px] bg-[#640D14] text-white font-black px-3 py-1 rounded-full mt-3 inline-block uppercase tracking-widest italic">
                             Save {pkg.save}!
                           </div>
                         )}
                       </div>
                       <div className="text-right">
-                        <div className={`text-2xl font-black ${pkg.popular ? 'text-[#640D14]' : 'text-[#38040E]'}`}>
+                        <div className={`font-serif text-3xl font-bold ${pkg.popular ? 'text-[#640D14]' : 'text-[#38040E]'}`}>
                           {pkg.price}
                         </div>
                         {pkg.popular && (
-                          <div className="text-[9px] font-black text-[#640D14] uppercase tracking-widest mt-1">
+                          <div className="font-sans text-[9px] font-black text-[#640D14] uppercase tracking-[0.2em] mt-2">
                             Most Selected
                           </div>
                         )}
@@ -151,26 +159,26 @@ export const BookingSection = () => {
                 ))}
               </div>
               
-              <div className="mt-8 p-5 bg-amber-50 rounded-2xl border border-amber-100">
-                <p className="text-[10px] text-amber-800 leading-relaxed font-bold uppercase tracking-wide">
+              <div className="mt-10 p-6 bg-amber-50/50 rounded-[1.5rem] border border-amber-100/50">
+                <p className="font-sans text-[10px] text-amber-800 leading-relaxed font-black uppercase tracking-[0.2em] mb-2">
                   Important Policy:
                 </p>
-                <p className="text-[10px] text-amber-700 leading-relaxed mt-1 font-medium italic">
+                <p className="font-sans text-[10px] text-amber-700 leading-relaxed font-medium italic">
                   Credits are non-transferable between categories (Reformer / Chair / Private). Please check your class type before purchase.
                 </p>
               </div>
             </div>
             
             {/* JOIN CARD */}
-            <div className="bg-gradient-to-br from-[#38040E] to-[#640D14] rounded-[2.5rem] p-10 text-white shadow-2xl relative overflow-hidden group">
-              <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-white/5 rounded-full group-hover:scale-150 transition-transform duration-700"></div>
-              <h3 className="text-2xl font-black mb-3 uppercase tracking-tight">Join Fixclub</h3>
-              <p className="text-white/70 mb-8 text-xs font-medium leading-relaxed max-w-[80%]">
+            <div className="bg-gradient-to-br from-[#38040E] to-[#640D14] rounded-[3rem] p-12 text-white shadow-2xl relative overflow-hidden group">
+              <div className="absolute -right-10 -bottom-10 w-48 h-48 bg-white/5 rounded-full group-hover:scale-150 transition-transform duration-1000"></div>
+              <h3 className="font-serif text-3xl font-bold mb-4 uppercase italic tracking-tight">Join Fixclub</h3>
+              <p className="font-sans text-white/70 mb-10 text-[13px] font-medium leading-[1.8] max-w-[85%]">
                 Create an account to track your progress, manage credits, and get exclusive member notifications.
               </p>
               <button 
                 onClick={handleRegister}
-                className="w-full bg-white text-[#640D14] py-4 rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-gray-100 transition shadow-lg cursor-pointer">
+                className="w-full bg-white text-[#640D14] py-5 rounded-[1.5rem] font-sans font-black uppercase text-[11px] tracking-[0.3em] hover:bg-black hover:text-white transition-all shadow-lg cursor-pointer">
                 Create Account
               </button>
             </div>

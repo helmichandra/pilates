@@ -71,16 +71,16 @@ const Facility: React.FC = () => {
         {/* Header Section */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 text-[#640D14] font-black uppercase text-[10px] tracking-[0.3em] mb-4">
+            <div className="inline-flex items-center gap-2 text-[#640D14] font-sans font-black uppercase text-[10px] tracking-[0.3em] mb-4">
               <span className="w-10 h-[1px] bg-[#640D14]"></span>
               The Environment
             </div>
-            <h3 className="text-4xl lg:text-6xl font-black text-[#38040E] tracking-tighter leading-[0.95] uppercase italic">
+            <h3 className="font-serif text-5xl lg:text-7xl font-bold text-[#38040E] tracking-tighter leading-[0.9] uppercase italic">
               Curated <br/>
               <span className="text-[#640D14] not-italic">Facilities.</span>
             </h3>
           </div>
-          <p className="text-gray-500 font-medium max-w-sm text-sm leading-relaxed italic">
+          <p className="font-sans text-gray-500 font-medium max-w-sm text-sm leading-relaxed italic border-l-2 border-[#640D14]/20 pl-6">
             "Setiap sudut dirancang untuk mendukung gaya hidup Anda dengan kenyamanan dan kualitas berkelas."
           </p>
         </div>
@@ -110,13 +110,13 @@ const Facility: React.FC = () => {
                 <div className="w-14 h-14 bg-[#640D14] rounded-2xl flex items-center justify-center mb-6 shadow-xl border border-white/10 rotate-3 group-hover:rotate-12 transition-transform">
                   {item.icon}
                 </div>
-                <h3 className="text-2xl font-black text-white uppercase tracking-tight mb-3 italic leading-none">
+                <h3 className="font-serif text-3xl font-bold text-white uppercase tracking-tight mb-3 italic leading-none">
                   {item.title}
                 </h3>
-                <p className="text-white/60 text-[10px] font-bold uppercase tracking-widest mb-6 opacity-0 group-hover:opacity-100 transition-opacity">
+                <p className="font-sans text-white/60 text-[10px] font-bold uppercase tracking-widest mb-6 opacity-0 group-hover:opacity-100 transition-opacity">
                   Tap to explore details
                 </p>
-                <div className="flex items-center gap-2 text-white text-[10px] font-black uppercase tracking-[0.2em] border-t border-white/10 pt-5">
+                <div className="font-sans flex items-center gap-2 text-white text-[10px] font-black uppercase tracking-[0.2em] border-t border-white/10 pt-5">
                   View Details <ArrowRight size={14} className="group-hover:translate-x-2 transition-transform" />
                 </div>
               </div>
@@ -151,7 +151,6 @@ const Facility: React.FC = () => {
                   <X size={24} />
                 </button>
 
-                {/* Modal Left: Image */}
                 <div className="relative w-full lg:w-1/2 h-80 lg:h-auto overflow-hidden">
                   <Image 
                     src={selectedFacility.image} 
@@ -162,36 +161,35 @@ const Facility: React.FC = () => {
                   <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent"></div>
                 </div>
 
-                {/* Modal Right: Content */}
                 <div className="w-full lg:w-1/2 p-10 lg:p-16 flex flex-col justify-center bg-white">
-                  <div className="inline-flex items-center gap-2 text-[#640D14] font-black uppercase text-[10px] tracking-[0.3em] mb-6">
+                  <div className="inline-flex items-center gap-2 text-[#640D14] font-sans font-black uppercase text-[10px] tracking-[0.3em] mb-6">
                     <span className="w-10 h-[2px] bg-[#640D14]"></span>
                     Premium Experience
                   </div>
-                  <h3 className="text-4xl lg:text-5xl font-black text-[#38040E] uppercase tracking-tighter mb-6 italic leading-tight">
+                  <h3 className="font-serif text-5xl lg:text-6xl font-bold text-[#38040E] uppercase tracking-tighter mb-6 italic leading-tight">
                     {selectedFacility.title}
                   </h3>
-                  <p className="text-gray-500 font-medium mb-10 leading-relaxed text-lg italic">
+                  <p className="font-serif text-gray-500 font-medium mb-10 leading-relaxed text-xl italic border-l-4 border-[#640D14]/10 pl-6 py-1">
                     "{selectedFacility.description}"
                   </p>
                   
                   <div className="space-y-6">
-                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-4">Included Amenities:</p>
-                    <div className="grid gap-6">
+                    <p className="font-sans text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-4">Included Amenities:</p>
+                    <div className="grid gap-4">
                       {selectedFacility.details.map((item, index) => (
                         <motion.div 
                           key={index}
                           initial={{ opacity: 0, x: 20 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: 0.2 + (index * 0.1) }}
-                          className="flex items-start gap-4 p-4 rounded-2xl bg-[#FDF8F8] border border-gray-100"
+                          className="flex items-start gap-4 p-5 rounded-3xl bg-[#FDF8F8] border border-gray-100"
                         >
                           <div className="mt-1">
                             <CheckCircle2 size={18} className="text-[#640D14]" />
                           </div>
                           <div>
-                            <h5 className="font-black text-[#38040E] uppercase text-xs tracking-tight mb-1">{item.label}</h5>
-                            <p className="text-xs text-gray-400 font-medium leading-relaxed">{item.desc}</p>
+                            <h5 className="font-sans font-black text-[#38040E] uppercase text-[10px] tracking-widest mb-1">{item.label}</h5>
+                            <p className="font-sans text-[11px] text-gray-500 font-medium leading-relaxed">{item.desc}</p>
                           </div>
                         </motion.div>
                       ))}
@@ -200,7 +198,7 @@ const Facility: React.FC = () => {
 
                   <button 
                     onClick={() => setSelectedFacility(null)}
-                    className="mt-12 w-full bg-[#640D14] text-white py-5 rounded-[2rem] font-black uppercase text-[10px] tracking-[0.3em] hover:bg-black transition-all transform active:scale-95"
+                    className="font-sans mt-12 w-full bg-[#640D14] text-white py-5 rounded-[2rem] font-black uppercase text-[10px] tracking-[0.3em] hover:bg-black transition-all transform active:scale-95"
                   >
                     Back to Facilities
                   </button>
