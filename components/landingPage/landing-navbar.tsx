@@ -26,9 +26,9 @@ export default function Navigation() {
   };
 
   const navLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'Services', href: '#services' },
-    { name: 'About', href: '#about' },
+    { name: 'Beranda', href: '#home' },
+    { name: 'Servis', href: '#services' },
+    { name: 'Tentang Kami', href: '#about' },
   ];
 
   return (
@@ -70,7 +70,7 @@ export default function Navigation() {
               onMouseLeave={() => setActiveDropdown(null)}
             >
               <button className="flex items-center gap-2 font-sans text-[11px] font-black uppercase tracking-[0.2em] text-[#38040E]/70 hover:text-[#640D14] transition-colors cursor-pointer">
-                Facility <ChevronDown size={12} className={`transition-transform duration-300 ${activeDropdown === 'facility' ? 'rotate-180' : ''}`} />
+                Fasilitas <ChevronDown size={12} className={`transition-transform duration-300 ${activeDropdown === 'facility' ? 'rotate-180' : ''}`} />
               </button>
               <AnimatePresence>
                 {activeDropdown === 'facility' && (
@@ -101,7 +101,7 @@ export default function Navigation() {
               onMouseLeave={() => setActiveDropdown(null)}
             >
               <button className="flex items-center gap-2 font-sans text-[11px] font-black uppercase tracking-[0.2em] text-[#38040E]/70 hover:text-[#640D14] transition-colors cursor-pointer">
-                Booking <ChevronDown size={12} />
+                Reservasi <ChevronDown size={12} />
               </button>
               <AnimatePresence>
                 {activeDropdown === 'booking' && (
