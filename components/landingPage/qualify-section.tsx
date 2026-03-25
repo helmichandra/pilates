@@ -52,7 +52,7 @@ const About: React.FC = () => {
             <div className="mt-12 grid sm:grid-cols-2 gap-10">
               <div className="space-y-4">
                 <h4 className="font-sans font-black text-[#38040E] uppercase text-[11px] tracking-[0.2em] flex items-center gap-2">
-                  <Star size={16} className="text-[#640D14]" /> Our Vision
+                  <Star size={16} className="text-[#640D14]" /> Visi
                 </h4>
                 <p className="font-sans text-gray-500 text-xs leading-relaxed font-medium">
                   Menjadi destinasi sport & lifestyle terdepan di Indonesia yang memberikan pengalaman olahraga lengkap, nyaman, dan menyenangkan bagi semua kalangan.
@@ -61,16 +61,16 @@ const About: React.FC = () => {
 
               <div className="space-y-4">
                 <h4 className="font-sans font-black text-[#38040E] uppercase text-[11px] tracking-[0.2em] flex items-center gap-2">
-                  <CheckCircle2 size={16} className="text-[#640D14]" /> Our Mission
+                  <CheckCircle2 size={16} className="text-[#640D14]" /> Misi
                 </h4>
                 <ul className="space-y-3">
                   {missions.map((item, index) => (
                     <li key={index} className="flex items-start gap-2">
                       <div className="w-1.5 h-1.5 rounded-full bg-[#640D14] mt-1.5 shrink-0" />
-                      <span className="font-sans text-[10px] font-bold text-gray-500 uppercase leading-tight tracking-wide">
-                        {item}
-                      </span>
-                    </li>
+                        <p className="font-sans text-gray-500 text-xs leading-relaxed font-medium">
+                          {item}
+                        </p>
+                      </li>
                   ))}
                 </ul>
               </div>

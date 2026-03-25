@@ -1,9 +1,13 @@
 "use client";
 import React from 'react';
 import Link from 'next/link';
-import { Instagram, Phone, Mail, MapPin } from 'lucide-react';
+import { Instagram, Phone, Mail } from 'lucide-react';
 
 const Footer: React.FC = () => {
+  // Data Lokasi FIX Padel (Kreo, Tangerang)
+  const mapEmbedUrl = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.273678519448!2d106.7289!3d-6.2276!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMTMnMzkuNCJTIDEwNiw0Myc0NC4wIkU!5e0!3m2!1sid!2sid!4v1711380000000!5m2!1sid!2sid0";
+  const googleMapsLink = "https://maps.app.goo.gl/tVZBrYnF2FAwngCt8";
+
   return (
     <footer className="bg-[#FDF8F8] pt-24 pb-12">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -21,10 +25,12 @@ const Footer: React.FC = () => {
               <span className="text-[#640D14] not-italic">Sanctuary.</span>
             </h3>
             <p className="font-sans text-gray-500 font-medium mb-10 leading-relaxed text-sm italic border-l-2 border-[#640D14]/10 pl-6">
-              Kunjungi kami di lokasi strategis Jakarta. Kami siap menyambut Anda untuk memulai gaya hidup sehat dengan fasilitas yang terkurasi.
+              Jl. AMD X No.35, Kreo, Kec. Larangan, <br/>
+              Kota Tangerang, Banten 15516. <br/>
+              Kami siap menyambut Anda untuk memulai gaya hidup sehat.
             </p>
             <Link 
-              href="https://maps.google.com" 
+              href={googleMapsLink}
               target="_blank"
               className="font-sans inline-block bg-[#640D14] text-white px-10 py-5 rounded-[1.5rem] font-black uppercase text-[10px] tracking-[0.2em] hover:bg-black transition-all shadow-xl shadow-[#640D14]/20 transform active:scale-95"
             >
@@ -37,12 +43,13 @@ const Footer: React.FC = () => {
             <div className="absolute inset-0 bg-[#640D14]/5 rounded-[3.5rem] blur-3xl transform group-hover:scale-105 transition-transform duration-1000"></div>
             <div className="relative overflow-hidden rounded-[3rem] border-[12px] border-white shadow-2xl h-[450px]">
               <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.3033!2d106.81!3d-6.22!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMTMnMTIuMCJTIDEwNiw0OCczNi4wIkU!5e0!3m2!1sen!2sid!4v1" 
+                src={mapEmbedUrl}
                 width="100%" 
                 height="100%" 
                 style={{ border: 0 }} 
                 allowFullScreen={true} 
                 loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
                 className="grayscale contrast-[1.1] brightness-[1.05] group-hover:grayscale-0 transition-all duration-1000 ease-in-out"
               ></iframe>
             </div>
@@ -67,7 +74,7 @@ const Footer: React.FC = () => {
               <Link href="https://instagram.com/fixclub.id" target="_blank" className="text-gray-400 hover:text-[#640D14] transition-all transform hover:-translate-y-1">
                 <Instagram size={20} />
               </Link>
-              <Link href="tel:+6281918007016" className="text-gray-400 hover:text-[#640D14] transition-all transform hover:-translate-y-1">
+              <Link href="tel:+6282298088866" className="text-gray-400 hover:text-[#640D14] transition-all transform hover:-translate-y-1">
                 <Phone size={20} />
               </Link>
               <Link href="mailto:hello@fixclub.id" className="text-gray-400 hover:text-[#640D14] transition-all transform hover:-translate-y-1">

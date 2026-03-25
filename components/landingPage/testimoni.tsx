@@ -6,7 +6,6 @@ import { ChevronDown, HelpCircle, Clock, CreditCard, ShieldAlert, Timer } from '
 interface FAQItem {
   question: string;
   answer: React.ReactNode;
-  category: string;
   icon: React.ElementType;
 }
 
@@ -15,13 +14,11 @@ export const FAQSection = () => {
 
   const faqs: FAQItem[] = [
     {
-      category: "OPERATIONAL",
       icon: Clock,
       question: "Kapan Jam Operasional Studio?",
       answer: "Jam operasional Studio kami untuk menjawab pertanyaan Member adalah pukul 07.00 - 20.00 WIB. Pertanyaan yang masuk melewati jam tersebut akan dilayani pada hari berikutnya."
     },
     {
-      category: "CREDITS",
       icon: CreditCard,
       question: "Bagaimana Ketentuan Kredit & Booking?",
       answer: (
@@ -33,13 +30,11 @@ export const FAQSection = () => {
       )
     },
     {
-      category: "SESSION",
       icon: Timer,
       question: "Berapa Lama Durasi Sesi & Apa Yang Harus Dibawa?",
       answer: "Setiap sesi berlangsung +/- 50 menit. Member WAJIB menggunakan kaos kaki dan sarung tangan anti-slip selama latihan serta menjaga protokol kesehatan."
     },
     {
-      category: "POLICY",
       icon: ShieldAlert,
       question: "Kebijakan Pembatalan & Keterlambatan",
       answer: (
@@ -51,7 +46,6 @@ export const FAQSection = () => {
       )
     },
     {
-      category: "TERMS",
       icon: ShieldAlert,
       question: "Syarat & Ketentuan (Terms & Conditions)",
       answer: (
@@ -63,7 +57,6 @@ export const FAQSection = () => {
       )
     },
     {
-      category: "VALIDITY",
       icon: Clock,
       question: "Berapa Lama Masa Berlaku Paket?",
       answer: (
@@ -117,11 +110,8 @@ export const FAQSection = () => {
                     <div className={`p-4 rounded-2xl transition-all duration-500 ${isOpen ? 'bg-[#640D14] text-white shadow-lg shadow-[#640D14]/20' : 'bg-white text-gray-400 border border-gray-100'}`}>
                       <faq.icon size={22} />
                     </div>
-                    <div>
-                      <span className="block font-sans text-[9px] font-black text-[#640D14] tracking-[0.3em] mb-2 uppercase">
-                        {faq.category}
-                      </span>
-                      <h4 className={`font-serif text-xl sm:text-2xl font-bold uppercase italic tracking-tight leading-tight transition-colors ${isOpen ? 'text-[#38040E]' : 'text-gray-600'}`}>
+                    <div>                  
+                      <h4 className={`font-serif text-xl sm:text-2xl font-bold italic tracking-tight leading-tight transition-colors ${isOpen ? 'text-[#38040E]' : 'text-gray-600'}`}>
                         {faq.question}
                       </h4>
                     </div>
@@ -156,7 +146,7 @@ export const FAQSection = () => {
         </div>
 
         {/* FOOTER CALL TO ACTION */}
-        <div className="mt-20 p-12 bg-[#38040E] rounded-[3rem] text-center text-white relative overflow-hidden group">
+        {/* <div className="mt-20 p-12 bg-[#38040E] rounded-[3rem] text-center text-white relative overflow-hidden group">
           <div className="absolute top-0 right-0 p-10 opacity-5 group-hover:scale-150 transition-transform duration-1000">
             <HelpCircle size={160} />
           </div>
@@ -167,7 +157,7 @@ export const FAQSection = () => {
               Hubungi Admin Via WhatsApp
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );
