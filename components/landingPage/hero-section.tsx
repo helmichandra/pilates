@@ -8,7 +8,6 @@ import type { Swiper as SwiperType } from 'swiper';
 import { ArrowRight, MapPin } from 'lucide-react';
 import Image from "next/image";
 
-// Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/effect-fade';
 import 'swiper/css/pagination';
@@ -23,7 +22,7 @@ interface SlideData {
   description: string;
   primaryBtn: string;
   secondaryBtn: string;
-  primaryLink: string; // Tambahkan ini agar tidak error TS
+  primaryLink: string;
 }
 
 export default function Hero() {
@@ -79,31 +78,24 @@ export default function Hero() {
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15, delayChildren: 0.3 }
-    },
+    visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.2 } },
   };
 
   const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } 
-    }
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
   };
 
   return (
-    <section id="home" className="relative h-screen w-full overflow-hidden bg-[#38040E]">
+    <section id="home" className="relative h-[100dvh] w-full overflow-hidden bg-[#38040E]">
       <Swiper
         modules={[Autoplay, EffectFade, Pagination]}
         effect={'fade'}
-        speed={1500}
+        speed={1000}
         autoplay={{ delay: 6000, disableOnInteraction: false }}
         pagination={{
           clickable: true,
-          renderBullet: (_, className) => `<span class="${className} !bg-white/40 !w-12 !h-1 !rounded-full"></span>`,
+          renderBullet: (_, className) => `<span class="${className} !bg-white/40 !w-8 sm:!w-12 !h-1 !rounded-full"></span>`,
         }}
         loop={true}
         onSlideChange={(swiper: SwiperType) => setActiveIndex(swiper.realIndex)}
@@ -117,12 +109,12 @@ export default function Hero() {
                 alt={slide.tagline}
                 fill
                 priority={index === 0}
-                className="object-cover scale-110 active-slide-zoom"
+                className="object-cover scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#38040E] via-[#38040E]/40 to-transparent z-10"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#38040E] via-[#38040E]/60 to-[#38040E]/20 z-10"></div>
             </div>
 
-            <div className="relative z-20 h-full max-w-7xl mx-auto px-6 lg:px-8 flex flex-col justify-center pt-20">
+            <div className="relative z-20 h-full max-w-7xl mx-auto px-6 flex flex-col justify-center pt-24 sm:pt-20">
               <AnimatePresence mode="wait">
                 {activeIndex === index && (
                   <motion.div 
@@ -133,40 +125,41 @@ export default function Hero() {
                     exit="hidden"
                     className="max-w-4xl"
                   >
-                    <motion.div variants={itemVariants} className="flex items-center gap-4 mb-8">
-                      <span className="font-sans text-[10px] text-white/90 font-black uppercase tracking-[0.3em] bg-white/10 backdrop-blur-md px-5 py-2 rounded-full border border-white/10">
+                    {/* Tagline dioptimasi ukuran fontnya untuk mobile */}
+                    <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-3 mb-6 sm:mb-8">
+                      <span className="font-sans text-[8px] sm:text-[10px] text-white/90 font-black uppercase tracking-[0.2em] sm:tracking-[0.3em] bg-white/10 backdrop-blur-md px-4 py-1.5 sm:px-5 sm:py-2 rounded-full border border-white/10">
                         {slide.tagline}
                       </span>
-                      <div className="hidden sm:flex items-center gap-2 text-white/50 font-sans text-[10px] font-bold uppercase tracking-widest">
-                        <MapPin size={12} /> Kreo • Ciledug
-                      </div>
                     </motion.div>
                     
+                    {/* Title dengan fluid font size untuk mencegah tabrakan di mobile */}
                     <motion.h1 
                       variants={itemVariants}
-                      className="font-serif text-6xl sm:text-8xl lg:text-9xl text-white leading-[0.85] tracking-tighter uppercase italic mb-8"
+                      className="font-serif text-[44px] xs:text-5xl sm:text-8xl lg:text-9xl text-white leading-[0.9] tracking-tighter uppercase italic mb-6 sm:mb-8"
                     >
                       {slide.titlePart1} <span className="text-[#640D14]">{slide.titlePart2}.</span><br />
-                      <span className="not-italic text-white/90 text-3xl sm:text-5xl lg:text-6xl block mt-4">
+                      <span className="not-italic text-white/90 text-xl xs:text-2xl sm:text-5xl lg:text-6xl block mt-2 sm:mt-4">
                         {slide.titlePart3}
                       </span>
                     </motion.h1>
                     
+                    {/* Deskripsi diperkecil sedikit di mobile agar tidak menumpuk */}
                     <motion.p 
                       variants={itemVariants}
-                      className="font-sans text-white/70 text-base sm:text-lg max-w-xl leading-relaxed font-medium mb-12"
+                      className="font-sans text-white/70 text-sm sm:text-lg max-w-xs sm:max-w-xl leading-relaxed font-medium mb-10 sm:mb-12"
                     >
                       {slide.description}
                     </motion.p>
                     
-                    <motion.div variants={itemVariants} className="flex flex-wrap gap-5">
+                    {/* Button Group: Stack di mobile, Row di desktop */}
+                    <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 sm:gap-5">
                       <button 
                         onClick={() => handlePrimaryAction(slide.primaryLink)}
-                        className="font-sans bg-[#640D14] text-white px-10 py-5 rounded-full font-black uppercase text-[10px] tracking-[0.2em] flex items-center gap-3 shadow-2xl shadow-[#640D14]/30 hover:bg-black transition-all active:scale-95 cursor-pointer"
+                        className="w-full sm:w-auto font-sans bg-[#640D14] text-white px-8 py-4 sm:px-10 sm:py-5 rounded-full font-black uppercase text-[9px] sm:text-[10px] tracking-[0.2em] flex items-center justify-center gap-3 shadow-2xl hover:bg-black transition-all active:scale-95"
                       >
-                        {slide.primaryBtn} <ArrowRight size={16} />
+                        {slide.primaryBtn} <ArrowRight size={14} />
                       </button>
-                      <button className="font-sans bg-white/5 text-white px-10 py-5 rounded-full border border-white/10 hover:bg-white/10 transition-all font-black uppercase text-[10px] tracking-[0.2em] backdrop-blur-sm">
+                      <button className="w-full sm:w-auto font-sans bg-white/5 text-white px-8 py-4 sm:px-10 sm:py-5 rounded-full border border-white/10 hover:bg-white/10 transition-all font-black uppercase text-[9px] sm:text-[10px] tracking-[0.2em] backdrop-blur-sm">
                         {slide.secondaryBtn}
                       </button>
                     </motion.div>
