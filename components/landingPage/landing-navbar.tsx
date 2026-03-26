@@ -1,7 +1,8 @@
 "use client";
 import { useState, useEffect } from 'react';
 import { 
-  Menu, X, ChevronDown, ExternalLink, Dumbbell, Trophy, Coffee
+  Menu, X, ChevronDown, ExternalLink, Dumbbell, Trophy, Coffee,
+  Instagram, Phone, Mail, MapPin
 } from 'lucide-react';
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -14,12 +15,13 @@ export default function Navigation() {
   const router = useRouter();
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
+    // Top Bar menghilang saat scroll > 10px
+    const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Mencegah scroll pada body saat menu mobile terbuka
+  // Lock scroll saat menu mobile terbuka
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -44,10 +46,33 @@ export default function Navigation() {
   return (
     <>
       <nav className={`fixed top-0 w-full z-[110] transition-all duration-500 ${
-        scrolled || isOpen ? 'bg-white shadow-md py-2' : 'bg-white/80 backdrop-blur-md py-4'
+        scrolled || isOpen ? 'bg-white shadow-md' : 'bg-white/90 backdrop-blur-md'
       }`}>
+        
+        {/* --- TOP BAR (Instagram, WA, dll) --- */}
+        <div 
+          className={`hidden lg:block border-b border-gray-100/50 overflow-hidden transition-all duration-500 ease-in-out ${
+            scrolled ? 'max-h-0 opacity-0' : 'max-h-20 opacity-100'
+          }`}
+        >
+          <div className="max-w-7xl mx-auto px-6 lg:px-8 py-3 flex justify-end items-center gap-8">
+            <a href="https://instagram.com/fixclub.id" target="_blank" className="flex items-center gap-2 font-sans text-[9px] font-black uppercase tracking-[0.2em] text-[#38040E]/60 hover:text-[#640D14] transition-colors">
+              <Instagram size={14} /> INSTAGRAM
+            </a>
+            <a href="https://wa.me/6282298088866" target="_blank" className="flex items-center gap-2 font-sans text-[9px] font-black uppercase tracking-[0.2em] text-[#38040E]/60 hover:text-[#640D14] transition-colors">
+              <Phone size={14} /> WHATSAPP
+            </a>
+            <a href="mailto:hello@fixclub.id" className="flex items-center gap-2 font-sans text-[9px] font-black uppercase tracking-[0.2em] text-[#38040E]/60 hover:text-[#640D14] transition-colors">
+              <Mail size={14} /> EMAIL
+            </a>
+            <a href="https://maps.app.goo.gl/tVZBrYnF2FAwngCt8" className="flex items-center gap-2 font-sans text-[9px] font-black uppercase tracking-[0.2em] text-[#38040E]/60 hover:text-[#640D14] transition-colors">
+              <MapPin size={14} /> LOCATION
+            </a>
+          </div>
+        </div>
+
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex justify-between items-center h-20">
             
             {/* --- LOGO --- */}
             <div 
@@ -58,7 +83,7 @@ export default function Navigation() {
                 <Image src="/media/logo.jpeg" alt="Logo" fill className="object-cover" />
               </div>
               <span className="font-serif text-xl sm:text-2xl font-bold tracking-tighter text-[#38040E] italic">
-                Fix<span className="text-[#640D14] not-italic">club.</span>
+                FIX<span className="text-[#640D14] not-italic">CLUB</span>
               </span>
             </div>
             
@@ -128,7 +153,7 @@ export default function Navigation() {
                     {link.active && (
                       <motion.div 
                         layoutId="nav-underline"
-                        className="absolute bottom-0 left-0 w-full h-[2px] bg-[#640D14]"
+                        className="absolute bottom-[-10px] left-0 w-full h-[2.5px] bg-[#640D14]"
                       />
                     )}
                   </a>
@@ -137,7 +162,7 @@ export default function Navigation() {
 
               <button 
                 onClick={() => router.push('/auth/login')} 
-                className="font-sans bg-[#640D14] text-white px-8 py-3.5 rounded-[1.25rem] font-black text-[10px] uppercase tracking-[0.2em] hover:bg-black transition-all shadow-xl shadow-[#640D14]/20 active:scale-95 ml-4"
+                className="font-sans bg-[#640D14] text-white px-8 py-4 rounded-full font-black text-[10px] uppercase tracking-[0.2em] hover:bg-black transition-all shadow-xl shadow-[#640D14]/20 active:scale-95 ml-4"
               >
                 LOGIN / REGISTER
               </button>
@@ -183,9 +208,13 @@ export default function Navigation() {
                   <div className="pt-6 border-t border-gray-100">
                     <p className="font-sans text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mb-6">Services & Facilities</p>
                     <div className="grid grid-cols-1 gap-3">
-                      {['Pilates Studio', 'Padel Court', 'Fix Cafe'].map((name) => (
-                        <a key={name} href="#" onClick={closeMenu} className="flex items-center justify-between p-5 bg-[#FDF8F8] rounded-[1.5rem] font-sans font-black text-[11px] uppercase tracking-widest text-[#38040E] hover:bg-[#640D14] hover:text-white transition-all group">
-                          {name}
+                      {[
+                        { name: 'Pilates Studio', href: '#pilates' },
+                        { name: 'Padel Court', href: '#padel' },
+                        { name: 'Fix Cafe', href: '#cafe' }
+                      ].map((item) => (
+                        <a key={item.name} href={item.href} onClick={closeMenu} className="flex items-center justify-between p-5 bg-[#FDF8F8] rounded-[1.5rem] font-sans font-black text-[11px] uppercase tracking-widest text-[#38040E] hover:bg-[#640D14] hover:text-white transition-all group">
+                          {item.name}
                           <ArrowRight size={14} className="opacity-0 group-hover:opacity-100 transition-all" />
                         </a>
                       ))}
@@ -208,19 +237,12 @@ export default function Navigation() {
   );
 }
 
-// Helper icon untuk mobile menu
 function ArrowRight({ size, className }: { size: number, className?: string }) {
   return (
     <svg 
       xmlns="http://www.w3.org/2000/svg" 
-      width={size} 
-      height={size} 
-      viewBox="0 0 24 24" 
-      fill="none" 
-      stroke="currentColor" 
-      strokeWidth="3" 
-      strokeLinecap="round" 
-      strokeLinejoin="round" 
+      width={size} height={size} viewBox="0 0 24 24" fill="none" 
+      stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" 
       className={className}
     >
       <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
