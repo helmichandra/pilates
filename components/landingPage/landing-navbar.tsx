@@ -126,10 +126,10 @@ export default function Navigation() {
                             ) : (
                               <>
                                 <button onClick={() => router.push('/dashboard-user/booking')} className="w-full text-left px-6 py-4 hover:bg-[#FDF8F8] group">
-                                  <div className="font-sans font-black text-[10px] text-[#38040E] uppercase tracking-widest group-hover:text-[#640D14]">Fix Pilates Studio</div>
+                                  <div className="font-sans font-black text-[10px] text-[#38040E] uppercase tracking-widest group-hover:text-[#640D14] cursor-pointer">Fix Pilates Studio</div>
                                 </button>
                                 <a href="https://ayo.co.id/v/fix-padel" target="_blank" className="flex justify-between items-center px-6 py-4 hover:bg-[#FDF8F8] group">
-                                  <div className="font-sans font-black text-[10px] text-[#38040E] uppercase tracking-widest group-hover:text-[#640D14]">Fix Padel Court</div>
+                                  <div className="font-sans font-black text-[10px] text-[#38040E] uppercase tracking-widest group-hover:text-[#640D14] cursor-pointer">Fix Padel Court</div>
                                   <ExternalLink size={12} className="text-gray-300" />
                                 </a>
                               </>
@@ -162,7 +162,7 @@ export default function Navigation() {
 
               <button 
                 onClick={() => router.push('/auth/login')} 
-                className="font-sans bg-[#640D14] text-white px-8 py-4 rounded-full font-black text-[10px] uppercase tracking-[0.2em] hover:bg-black transition-all shadow-xl shadow-[#640D14]/20 active:scale-95 ml-4"
+                className="font-sans bg-[#640D14] text-white px-8 py-4 rounded-full font-black text-[10px] uppercase tracking-[0.2em] hover:bg-black transition-all shadow-xl shadow-[#640D14]/20 active:scale-95 ml-4 cursor-pointer"
               >
                 LOGIN / REGISTER
               </button>

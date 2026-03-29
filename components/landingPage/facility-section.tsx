@@ -146,7 +146,7 @@ const Facility: React.FC = () => {
               >
                 <button 
                   onClick={() => setSelectedFacility(null)}
-                  className="absolute top-8 right-8 z-20 p-3 bg-white/10 hover:bg-[#640D14] text-white rounded-full transition-all duration-300 backdrop-blur-md"
+                  className="absolute top-8 right-8 z-20 p-3 bg-white/10 hover:bg-[#640D14] text-white rounded-full transition-all duration-300 backdrop-blur-md cursor-pointer"
                 >
                   <X size={24} />
                 </button>
@@ -198,7 +198,7 @@ const Facility: React.FC = () => {
 
                   <button 
                     onClick={() => setSelectedFacility(null)}
-                    className="font-sans mt-12 w-full bg-[#640D14] text-white py-5 rounded-[2rem] font-black uppercase text-[10px] tracking-[0.3em] hover:bg-black transition-all transform active:scale-95"
+                    className="font-sans mt-12 w-full bg-[#640D14] text-white py-5 rounded-[2rem] font-black uppercase text-[10px] tracking-[0.3em] hover:bg-black transition-all transform active:scale-95 cursor-pointer"
                   >
                     Back to Facilities
                   </button>

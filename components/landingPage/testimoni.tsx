@@ -73,7 +73,7 @@ export const FAQSection = () => {
   ];
 
   return (
-    <section id="faq" className="py-24 px-4 sm:px-6 lg:px-8 bg-white">
+    <section id="faq" className="py-24 px-4 sm:px-6 lg:px-8 bg-[#FDF8F8]">
       <div className="max-w-4xl mx-auto">
         
         {/* HEADER - Cormorant Garamond */}

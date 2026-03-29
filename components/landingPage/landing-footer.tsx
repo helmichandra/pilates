@@ -22,7 +22,7 @@ const Footer: React.FC = () => {
             </span>
             <h3 className="font-serif text-5xl lg:text-6xl font-bold text-[#38040E] tracking-tighter uppercase italic mb-8 leading-none">
               Visit Our <br/>
-              <span className="text-[#640D14] not-italic">Sanctuary.</span>
+              <span className="text-[#640D14] not-italic">Point.</span>
             </h3>
             <p className="font-sans text-gray-500 font-medium mb-10 leading-relaxed text-sm italic border-l-2 border-[#640D14]/10 pl-6">
               Jl. AMD X No.35, Kreo, Kec. Larangan, <br/>

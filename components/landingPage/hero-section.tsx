@@ -155,11 +155,11 @@ export default function Hero() {
                     <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 sm:gap-5">
                       <button 
                         onClick={() => handlePrimaryAction(slide.primaryLink)}
-                        className="w-full sm:w-auto font-sans bg-[#640D14] text-white px-8 py-4 sm:px-10 sm:py-5 rounded-full font-black uppercase text-[9px] sm:text-[10px] tracking-[0.2em] flex items-center justify-center gap-3 shadow-2xl hover:bg-black transition-all active:scale-95"
+                        className="w-full sm:w-auto font-sans bg-[#640D14] text-white px-8 py-4 sm:px-10 sm:py-5 rounded-full font-black uppercase text-[9px] sm:text-[10px] tracking-[0.2em] flex items-center justify-center gap-3 shadow-2xl hover:bg-black transition-all active:scale-95 cursor-pointer"
                       >
                         {slide.primaryBtn} <ArrowRight size={14} />
                       </button>
-                      <button className="w-full sm:w-auto font-sans bg-white/5 text-white px-8 py-4 sm:px-10 sm:py-5 rounded-full border border-white/10 hover:bg-white/10 transition-all font-black uppercase text-[9px] sm:text-[10px] tracking-[0.2em] backdrop-blur-sm">
+                      <button className="w-full sm:w-auto font-sans bg-white/5 text-white px-8 py-4 sm:px-10 sm:py-5 rounded-full border border-white/10 hover:bg-white/10 transition-all font-black uppercase text-[9px] sm:text-[10px] tracking-[0.2em] backdrop-blur-sm cursor-pointer">
                         {slide.secondaryBtn}
                       </button>
                     </motion.div>

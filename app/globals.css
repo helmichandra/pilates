@@ -126,3 +126,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ... kode yang sudah ada ... */
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+}
