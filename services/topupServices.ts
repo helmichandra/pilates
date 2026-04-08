@@ -4,8 +4,6 @@ export const topupApi = {
   postTopup: async (itemId: number | string) => {
     const token = localStorage.getItem("token");
     
-    // LOG UNTUK DEBUGGING
-    console.log("Token yang dikirim:", token);
 
     if (!token) throw new Error("Silahkan login kembali (Token tidak ditemukan)");
 

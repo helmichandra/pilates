@@ -23,6 +23,7 @@ const nextConfig: NextConfig = {
       { source: "/api/pilates/masters/id/:id", destination: `${base}/pilates/masters/id/:id` },
 
       { source: "/api/pilates/schedules", destination: `${base}/pilates/schedules` },
+      { source: "/api/pilates/schedules/bulk", destination: `${base}/pilates/schedules/bulk` },
       { source: "/api/pilates/schedules/id/:id", destination: `${base}/pilates/schedules/id/:id` },
       // master
       { source: "/api/pilates/masters/all", destination: `${base}/pilates/masters/all` },

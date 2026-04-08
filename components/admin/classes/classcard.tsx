@@ -65,8 +65,8 @@ export const ClassCard = ({ item, onEdit, onDelete }: any) => {
           Quota: <span className="text-[#38040E]">{item.quota}</span>
         </div>
         <div className="flex gap-1">
-          <button onClick={onEdit} className="p-2 hover:bg-gray-100 rounded-xl text-gray-400"><Edit size={18} /></button>
-          <button onClick={onDelete} className="p-2 hover:bg-red-50 rounded-xl text-red-400"><Trash2 size={18} /></button>
+          <button onClick={onEdit} className="cursor-pointer p-2 hover:bg-gray-100 rounded-xl text-gray-400"><Edit size={18} /></button>
+          <button onClick={onDelete} className="cursor-pointer p-2 hover:bg-red-50 rounded-xl text-red-400"><Trash2 size={18} /></button>
         </div>
       </div>
     </div>

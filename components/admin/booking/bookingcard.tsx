@@ -1,6 +1,5 @@
 "use client";
 
-import React from 'react';
 import { Edit3, Trash2 } from 'lucide-react';
 
 interface BookingProps {

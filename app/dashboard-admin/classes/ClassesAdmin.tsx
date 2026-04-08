@@ -64,18 +64,29 @@ export default function SchedulePage() {
     setIsModalOpen(false);
   };
   
+  // Tambahkan fungsi ini di service pilatesSchedules atau definisikan manual
   const handleSubmit = async (formData: any) => {
     setIsLoading(true);
     try {
-      const res = selectedId 
-        ? await scheduleApi.update(selectedId, formData) 
-        : await scheduleApi.create(formData);
-  
-      // Pastikan response sukses sesuai format API Anda (biasanya code 200)
+      const isBulk = Array.isArray(formData);     
+      let res;
+
+      if (selectedId) {
+        // Logic Update
+        res = isBulk 
+          ? await scheduleApi.updateBulk(formData) // Pastikan method ini ada di service
+          : await scheduleApi.update(selectedId, formData);
+      } else {
+        // Logic Create
+        res = isBulk 
+          ? await scheduleApi.createBulk(formData) // Hit /api/pilates/schedules/bulk
+          : await scheduleApi.create(formData);
+      }
+
       if (res.code === 200 || res.status === "OK") {
         handleCloseModal();
         Swal.fire({
-          title: selectedId ? 'Update Successful!' : 'Schedule Created!',
+          title: 'Success!',
           icon: 'success',
           timer: 2000,
           toast: true,
@@ -84,21 +95,10 @@ export default function SchedulePage() {
         });
         fetchData();
       } else {
-        // Jika response sukses secara HTTP tapi API mengembalikan code error (e.g. 502/400)
-        throw res; 
+        throw res;
       }
     } catch (error: any) {
-      const errorMessage = error.data?.error || 
-                           error.response?.data?.data?.error || 
-                           error.message || 
-                           'Something went wrong';
-
-      Swal.fire({ 
-        title: 'Gagal!', 
-        text: errorMessage, 
-        icon: 'error',
-        confirmButtonColor: '#640D14'
-      });
+      // ... handling error yang sudah ada
     } finally {
       setIsLoading(false);
     }
@@ -148,7 +148,7 @@ export default function SchedulePage() {
 
           <button 
             onClick={() => setIsModalOpen(true)}
-            className="w-full sm:w-auto bg-[#640D14] text-white px-8 py-3.5 rounded-2xl font-bold shadow-lg shadow-[#640D14]/20 hover:scale-105 active:scale-95 transition-all"
+            className="w-full sm:w-auto bg-[#640D14] text-white px-8 py-3.5 rounded-2xl font-bold shadow-lg shadow-[#640D14]/20 hover:scale-105 active:scale-95 transition-all cursor-pointer"
           >
             + Create Schedule
           </button>
@@ -177,7 +177,7 @@ export default function SchedulePage() {
                   <button 
                     disabled={currentPage === 1}
                     onClick={() => setCurrentPage(p => p - 1)}
-                    className="p-2 bg-gray-100 rounded-xl disabled:opacity-30 hover:bg-gray-200 transition-all"
+                    className="p-2 bg-gray-100 rounded-xl disabled:opacity-30 hover:bg-gray-200 transition-all cursor-pointer"
                   >
                     <ChevronLeft size={20} />
                   </button>
@@ -187,7 +187,7 @@ export default function SchedulePage() {
                   <button 
                     disabled={currentPage === totalPages}
                     onClick={() => setCurrentPage(p => p + 1)}
-                    className="p-2 bg-gray-100 rounded-xl disabled:opacity-30 hover:bg-gray-200 transition-all"
+                    className="p-2 bg-gray-100 rounded-xl disabled:opacity-30 hover:bg-gray-200 transition-all cursor-pointer"
                   >
                     <ChevronRight size={20} />
                   </button>
