@@ -111,4 +111,22 @@ export const packageService = {
     });
     return response.json();
   },
+  getAllPackages: async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`/api/item_topup/masters/all`, {
+        headers: {
+          "Content-Type": "application/json",
+          "X-Api-Key": "X-Secret-Key",
+          "Authorization": `Bearer ${token}`
+        }
+      });
+  
+      if (!response.ok) throw new Error(`Server returned ${response.status}`);
+      return await response.json();
+    } catch (error) {
+      console.error("Fetch Error:", error);
+      return { code: 500, status: "Error", data: [] };
+    }
+  },
 };

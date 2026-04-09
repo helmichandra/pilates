@@ -41,6 +41,7 @@ const nextConfig: NextConfig = {
       { source: "/api/users/:path*", destination: `${base}/users/:path*` },      
       { source: "/api/item_topup/masters/id/:id", destination: `${base}/item_topup/masters/id/:id` },
       { source: "/api/item_topup/masters", destination: `${base}/item_topup/masters` },
+      { source: "/api/item_topup/masters/all", destination: `${base}/item_topup/masters/all` },
     ];
   },
 };

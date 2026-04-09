@@ -13,7 +13,7 @@ export default function PackagesPage() {
   
   const [modal, setModal] = useState<{show: boolean, type: 'add' | 'edit', id: number | null}>({
     show: false, type: 'add', id: null
-  });
+  });  
 
   const loadData = useCallback(async () => {
     setLoading(true);
