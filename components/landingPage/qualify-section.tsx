@@ -90,7 +90,7 @@ const About: React.FC = () => {
                   whileHover={{ scale: 1.02 }}
                   className="rounded-[2.5rem] overflow-hidden shadow-2xl shadow-[#640D14]/10 aspect-[4/5] relative"
                 >
-                  <img src="/media/landing-page/padel.png" alt="Padel Session" className="object-cover w-full h-full" />
+                  <img src="/media/landing-page/about/AboutPadel.jpg" alt="Padel Session" className="object-cover w-full h-full" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#38040E]/80 via-transparent to-transparent"></div>
                   <div className="absolute bottom-6 left-6 text-white">
                     <Zap size={20} className="mb-2 text-[#640D14]" />
@@ -123,7 +123,7 @@ const About: React.FC = () => {
                   whileHover={{ scale: 1.02 }}
                   className="rounded-[2.5rem] overflow-hidden shadow-2xl shadow-[#640D14]/10 aspect-[4/5] relative"
                 >
-                  <img src="/media/landing-page/pilates.png" alt="Pilates Studio" className="object-cover w-full h-full" />
+                  <img src="/media/landing-page/about/AboutWellness.jpg" alt="Pilates Studio" className="object-cover w-full h-full" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#38040E]/80 via-transparent to-transparent"></div>
                   <div className="absolute bottom-6 left-6 text-white">
                     <Heart size={20} className="mb-2 text-[#640D14]" />

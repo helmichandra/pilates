@@ -20,7 +20,7 @@ const Facility: React.FC = () => {
     {
       id: 'padel',
       title: 'Fix Padel',
-      image: '/media/landing-page/padel.png',
+      image: '/media/landing-page/facilities/FacilitiesPadel.jpg',
       icon: <Trophy className="text-white" size={24} />,
       description: 'A curated environment designed for comfort, performance, and ease.',
       details: [
@@ -31,7 +31,7 @@ const Facility: React.FC = () => {
     {
       id: 'cafe',
       title: 'Sky 7 Café',
-      image: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2500&auto=format&fit=crop',
+      image: '/media/landing-page/facilities/FacilitiesCafe.jpg',
       icon: <Coffee className="text-white" size={24} />,
       description: 'Tempat ideal untuk bersantai dan bersosialisasi setelah beraktivitas.',
       details: [
@@ -42,7 +42,7 @@ const Facility: React.FC = () => {
     {
       id: 'amenities',
       title: 'Premium Amenities',
-      image: '/media/facility4.jpeg',
+      image: '/media/landing-page/facilities/FacilitiesPremium.jpg',
       icon: <Sparkles className="text-white" size={24} />,
       description: 'Fasilitas pendukung yang dirancang untuk kenyamanan maksimal Anda.',
       details: [
@@ -54,7 +54,7 @@ const Facility: React.FC = () => {
     {
       id: 'parking',
       title: 'Akses Effortless',
-      image: 'https://images.unsplash.com/photo-1506521781263-d8422e82f27a?q=80&w=2000&auto=format&fit=crop',
+      image: '/media/landing-page/facilities/FacilitiesAkses.jpg',
       icon: <MapPin className="text-white" size={24} />,
       description: 'Akses mudah dan area parkir yang luas untuk setiap member.',
       details: [

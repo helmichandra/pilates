@@ -15,17 +15,17 @@ export default function ClassModal({ isOpen, onClose, onSubmit, isLoading, editI
     coach_id: "",
     class_type: "Reformer",
     class_level: "Beginner",
-    class_room: "",
+    class_room: "Pilates Room", // Default sudah terkunci
     credit_required: 1,
     duration_minutes: 0,
-    startDate: "", // Field baru untuk awal rentang
-    endDate: "",   // Field baru untuk akhir rentang
+    startDate: "",
+    endDate: "",
     start_time: "",
     end_time: "",
     quota: 10
   });
 
-  // 1. Fetch Dependencies (Classes & Coaches) & Detail Data jika Edit
+  // 1. Fetch Dependencies & Detail Data
   useEffect(() => {
     const fetchData = async () => {
       if (!isOpen) return;
@@ -50,7 +50,6 @@ export default function ClassModal({ isOpen, onClose, onSubmit, isLoading, editI
         if (dataClasses.code === 200) setClasses(dataClasses.data);
         if (dataCoaches.code === 200) setCoaches(dataCoaches.data);
 
-        // Jika mode Edit, ambil detail data
         if (editId) {
           const resDetail = await scheduleApi.getById(editId);
           if (resDetail.code === 200) {
@@ -62,19 +61,32 @@ export default function ClassModal({ isOpen, onClose, onSubmit, isLoading, editI
               coach_id: d.coach_id.toString(),
               class_type: d.class_type,
               class_level: d.class_level,
-              class_room: d.class_room,
+              class_room: d.class_room || "Pilates Room", // Fallback ke default
               credit_required: d.credit_required,
               duration_minutes: d.duration_minutes,
               startDate: formattedDate,
-              endDate: formattedDate, // Default sama untuk single edit
+              endDate: formattedDate,
               start_time: d.start_time.split('T')[1].substring(0, 5),
               end_time: d.end_time.split('T')[1].substring(0, 5),
               quota: d.quota
             });
           }
         } else {
-          // Reset form jika Create New
-          setForm(prev => ({ ...prev, startDate: "", endDate: "", pilates_master_id: "", coach_id: "" }));
+          // Reset form untuk Create New
+          setForm({
+            pilates_master_id: "",
+            coach_id: "",
+            class_type: "Reformer",
+            class_level: "Beginner",
+            class_room: "Pilates Room",
+            credit_required: 1,
+            duration_minutes: 0,
+            startDate: "",
+            endDate: "",
+            start_time: "",
+            end_time: "",
+            quota: 10
+          });
         }
       } catch (error) {
         console.error("Error fetching modal dependencies:", error);
@@ -86,25 +98,24 @@ export default function ClassModal({ isOpen, onClose, onSubmit, isLoading, editI
     fetchData();
   }, [isOpen, editId]);
 
-  // 2. Logika Hitung Durasi Otomatis
+  // 2. Hitung Durasi Otomatis
   useEffect(() => {
     if (form.start_time && form.end_time) {
       const [sh, sm] = form.start_time.split(':').map(Number);
       const [eh, em] = form.end_time.split(':').map(Number);
       let diff = (eh * 60 + em) - (sh * 60 + sm);
-      if (diff < 0) diff += 1440; // Handle lewat tengah malam
+      if (diff < 0) diff += 1440; 
       setForm(prev => ({ ...prev, duration_minutes: diff }));
     }
   }, [form.start_time, form.end_time]);
 
-  // 3. Handler Submit dengan Logika Bulk
+  // 3. Submit Handler
   const handleSubmitInternal = (e: React.FormEvent) => {
     e.preventDefault();
     
     const start = new Date(form.startDate);
     const end = form.endDate ? new Date(form.endDate) : start;
 
-    // Jika endDate lebih besar dari startDate, hitung sebagai Bulk
     if (end > start) {
       const bulkData = [];
       let currentDate = new Date(start);
@@ -129,7 +140,6 @@ export default function ClassModal({ isOpen, onClose, onSubmit, isLoading, editI
       }
       onSubmit(bulkData);
     } else {
-      // Single Create/Update
       const singleData = {
         pilates_master_id: Number(form.pilates_master_id),
         coach_id: Number(form.coach_id),
@@ -179,7 +189,6 @@ export default function ClassModal({ isOpen, onClose, onSubmit, isLoading, editI
                   </div>
 
                   <form onSubmit={handleSubmitInternal} className="grid grid-cols-2 gap-5">
-                    {/* Master Class */}
                     <div className="space-y-2 col-span-2">
                       <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Select Pilates Class</label>
                       <select required className="w-full h-14 px-5 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-[#640D14]" value={form.pilates_master_id} onChange={(e) => setForm({...form, pilates_master_id: e.target.value})}>
@@ -188,7 +197,6 @@ export default function ClassModal({ isOpen, onClose, onSubmit, isLoading, editI
                       </select>
                     </div>
 
-                    {/* Coach & Level */}
                     <div className="space-y-2">
                       <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Coach</label>
                       <select required className="w-full h-14 px-5 bg-gray-50 border border-gray-100 rounded-2xl outline-none" value={form.coach_id} onChange={(e) => setForm({...form, coach_id: e.target.value})}>
@@ -196,6 +204,7 @@ export default function ClassModal({ isOpen, onClose, onSubmit, isLoading, editI
                         {coaches.map((m: any) => (<option key={m.id} value={m.id}>{m.name}</option>))}
                       </select>
                     </div>
+                    
                     <div className="space-y-2">
                       <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Class Level</label>
                       <select className="w-full h-14 px-5 bg-gray-50 border border-gray-100 rounded-2xl outline-none" value={form.class_level} onChange={(e) => setForm({...form, class_level: e.target.value})}>
@@ -205,41 +214,46 @@ export default function ClassModal({ isOpen, onClose, onSubmit, isLoading, editI
                       </select>
                     </div>
 
-                    {/* Date Range: From & To */}
                     <div className="space-y-2">
                       <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">From Date</label>
                       <input required type="date" value={form.startDate} onChange={(e) => setForm({...form, startDate: e.target.value})} className="w-full h-14 px-5 bg-gray-50 border border-gray-100 rounded-2xl outline-none"/>
                     </div>
+                    
                     <div className="space-y-2">
                       <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">To Date (Bulk)</label>
-                      <input type="date" min={form.startDate} value={form.endDate} onChange={(e) => setForm({...form, endDate: e.target.value})} placeholder="Optional" className="w-full h-14 px-5 bg-gray-50 border border-gray-100 rounded-2xl outline-none"/>
+                      <input type="date" min={form.startDate} value={form.endDate} onChange={(e) => setForm({...form, endDate: e.target.value})} className="w-full h-14 px-5 bg-gray-50 border border-gray-100 rounded-2xl outline-none"/>
                     </div>
 
-                    {/* Start & End Time */}
                     <div className="space-y-2">
                       <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Start Time</label>
                       <input required type="time" value={form.start_time} onChange={(e) => setForm({...form, start_time: e.target.value})} className="w-full h-14 px-5 bg-gray-50 border border-gray-100 rounded-2xl outline-none"/>
                     </div>
+                    
                     <div className="space-y-2">
                       <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">End Time</label>
                       <input required type="time" value={form.end_time} onChange={(e) => setForm({...form, end_time: e.target.value})} className="w-full h-14 px-5 bg-gray-50 border border-gray-100 rounded-2xl outline-none"/>
                     </div>
 
-                    {/* Credits, Quota, Room */}
                     <div className="space-y-2">
                       <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Quota</label>
                       <input required type="number" value={form.quota} onChange={(e) => setForm({...form, quota: parseInt(e.target.value)})} className="w-full h-14 px-5 bg-gray-50 border border-gray-100 rounded-2xl outline-none"/>
                     </div>
+                    
                     <div className="space-y-2">
                       <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Credit Required</label>
                       <input required type="number" value={form.credit_required} onChange={(e) => setForm({...form, credit_required: parseInt(e.target.value)})} className="w-full h-14 px-5 bg-gray-50 border border-gray-100 rounded-2xl outline-none"/>
                     </div>
+
+                    {/* Room Name - Disabled & Default */}
                     <div className="space-y-2 col-span-2">
                       <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Room Name</label>
-                      <input required value={form.class_room} onChange={(e) => setForm({...form, class_room: e.target.value})} placeholder="Ex: Room A" className="w-full h-14 px-5 bg-gray-50 border border-gray-100 rounded-2xl outline-none"/>
+                      <input 
+                        disabled 
+                        value={form.class_room} 
+                        className="w-full h-14 px-5 bg-gray-100 border border-gray-200 rounded-2xl outline-none text-gray-400 font-bold cursor-not-allowed shadow-inner" 
+                      />
                     </div>
 
-                    {/* Duration Info */}
                     <div className="col-span-2 py-3 px-5 bg-[#640D14]/5 rounded-2xl border border-[#640D14]/10 flex justify-between items-center">
                        <span className="text-[10px] font-black text-[#640D14] uppercase tracking-widest">Calculated Duration</span>
                        <span className="text-sm font-black text-[#640D14]">{form.duration_minutes} Minutes</span>

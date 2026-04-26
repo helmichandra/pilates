@@ -13,16 +13,34 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Swal from 'sweetalert2';
+import { jwtDecode } from "jwt-decode"; // Import jwt-decode
 
 export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [username, setUsername] = useState("Account"); // State untuk nama user
 
   useEffect(() => {
+    // 1. Logika Scroll
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
+
+    // 2. Logika Ambil Username dari Token
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const decoded: any = jwtDecode(token);
+        // Sesuaikan 'decoded.username' atau 'decoded.name' dengan struktur payload JWT Anda
+        if (decoded.username || decoded.name) {
+          setUsername(decoded.username || decoded.name);
+        }
+      } catch (error) {
+        console.error("Failed to decode token:", error);
+      }
+    }
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -101,11 +119,16 @@ export default function Navbar() {
                   <div className="bg-[#640D14] text-white w-9 h-9 rounded-full flex items-center justify-center shadow-md">
                     <User size={16} strokeWidth={3} />
                   </div>
-                  <span className="text-[10px] font-black text-[#38040E] uppercase tracking-widest hidden md:block">Account</span>
+                  {/* Menampilkan Username hasil decode */}
+                  <span className="text-[10px] font-black text-[#38040E] uppercase tracking-widest hidden md:block max-w-[100px] truncate">
+                    {username}
+                  </span>
                 </div>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-60 rounded-[2rem] p-2 shadow-2xl border-none mt-2">
-                <DropdownMenuLabel className="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] p-4">Settings</DropdownMenuLabel>
+                <DropdownMenuLabel className="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] p-4 italic">
+                  Signed in as {username}
+                </DropdownMenuLabel>
                 <DropdownMenuItem onClick={() => router.push("/dashboard-user/profile")} className="rounded-xl p-3 font-bold text-[#38040E] cursor-pointer">Profile Settings</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => router.push("/dashboard-user/topup")} className="rounded-xl p-3 font-bold text-[#38040E] cursor-pointer">Billing & Credits</DropdownMenuItem>
                 <DropdownMenuSeparator />

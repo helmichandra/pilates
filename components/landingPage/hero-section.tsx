@@ -32,7 +32,7 @@ export default function Hero() {
   const slides: SlideData[] = [
     {
       id: 1,
-      image: '/media/landing-page/padel.png',
+      image: '/media/banner/Banner001.jpg',
       tagline: 'Fix Padel Court • International Standard',
       titlePart1: 'Play',
       titlePart2: 'Harder',
@@ -44,7 +44,7 @@ export default function Hero() {
     },
     {
       id: 2,
-      image: '/media/landing-page/pilates.png',
+      image: '/media/banner/Banner002.jpg',
       tagline: 'Fix Pilates Studio • Reformer Specialist',
       titlePart1: 'Move',
       titlePart2: 'Better',
@@ -56,7 +56,7 @@ export default function Hero() {
     },
     {
       id: 3,
-      image: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2500', 
+      image: '/media/banner/Banner003.jpg',
       tagline: 'Fix Cafe • Wellness Social Space',
       titlePart1: 'Rest',
       titlePart2: 'Smarter',

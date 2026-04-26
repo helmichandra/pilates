@@ -10,7 +10,7 @@ const services = [
     tagline: "Dynamic. Social. New Experience.",
     title: "Padel Court",
     description: "Nikmati pengalaman bermain padel standar internasional FIP dengan teknologi Super Flat Surface untuk pantulan bola presisi, pergerakan stabil, dan respons optimal di setiap rally. Dirancang untuk semua level, dari pemula hingga berpengalaman — menghadirkan permainan yang smooth, kompetitif, dan berkelas.",
-    image: "/media/landing-page/padel.png",
+    image: "/media/landing-page/services/ServicePadel.jpg",
     icon: Zap,
     features: ["Standard FIP", "Super Flat Surface", "All Skill Levels"],
     link: "https://ayo.co.id/v/fix-padel"
@@ -20,7 +20,7 @@ const services = [
     tagline: "Balance. Strength. Control.",
     title: "Pilates Studio",
     description: "Temukan keseimbangan tubuh melalui sesi reformer pilates yang dirancang untuk meningkatkan kekuatan, fleksibilitas, dan postur tubuh dipandu oleh instruktur profesional dalam ruang yang tenang dan eksklusif untuk pengalaman yang personal.",
-    image: "/media/landing-page/pilates.png",
+    image: "/media/landing-page/services/ServicePilates.jpg",
     icon: Heart,
     features: ["Professional Instructor", "Private Session", "Reformer Equipment"],
     link: "/dashboard-user/booking"
@@ -30,7 +30,7 @@ const services = [
     tagline: "Flexible. Private. Refined.",
     title: "Multipurpose Studio",
     description: "Ruang serbaguna eksklusif yang dirancang untuk menghadirkan fleksibilitas berbagai aktivitas mulai dari yoga, private session, hingga kelas komunitas dengan ambience yang tenang dan desain modern yang terkurasi.",
-    image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=2000", 
+    image: "/media/landing-page/services/ServiceMultipurpose.jpg",
     icon: Layout,
     features: ["Yoga & Meditation", "Community Class", "Private Events"],
     link: "/dashboard-user/booking"

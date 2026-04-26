@@ -6,6 +6,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from "framer-motion";
 import Swal from 'sweetalert2';
+import { jwtDecode } from "jwt-decode"; // Import jwt-decode
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,8 +21,9 @@ export default function Navbar() {
   const pathname = usePathname();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [adminName, setAdminName] = useState("Admin"); // State untuk nama admin
 
-  // Daftar menu lengkap untuk tampilan Desktop
+  // Daftar menu untuk tampilan Desktop
   const desktopMenu = [
     { label: 'Home', href: "/dashboard-admin/home" },
     { label: 'Users', href: "/dashboard-admin/users" },
@@ -34,6 +36,20 @@ export default function Navbar() {
 
   useEffect(() => {
     setMounted(true);
+
+    // Ambil Username dari Token
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const decoded: any = jwtDecode(token);
+        // Sesuaikan 'decoded.username' atau 'decoded.name' sesuai payload JWT Anda
+        if (decoded.username || decoded.name) {
+          setAdminName(decoded.username || decoded.name);
+        }
+      } catch (error) {
+        console.error("Failed to decode token:", error);
+      }
+    }
   }, []);
 
   const handleLogout = async () => {
@@ -101,11 +117,11 @@ export default function Navbar() {
                 <Image src="/media/logo.jpeg" alt="Fix Pilates Logo" fill className="object-cover" />
               </div>
               <div className="hidden sm:block">
-                <span className="font-black text-[#38040E] tracking-tighter text-lg block leading-none">Administrator</span>
+                <span className="font-black text-[#38040E] tracking-tighter text-lg block leading-none underline decoration-[#640D14] decoration-4 underline-offset-4">Administrator</span>
               </div>
             </div>
 
-            {/* DESKTOP MENU: Muncul hanya di layar LG ke atas */}
+            {/* DESKTOP MENU */}
             <nav className="hidden lg:flex items-center gap-1 bg-gray-50 p-1 rounded-2xl border border-gray-100">
               {desktopMenu.map((item) => {
                 const isActive = pathname === item.href;
@@ -125,10 +141,13 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center gap-4">
-            {/* Activity Log link khusus desktop */}
-            <Link href="/dashboard-admin/activity-logs" className="hidden lg:block text-[10px] font-black text-gray-400 uppercase tracking-widest hover:text-[#640D14] transition-colors">
-              Activity Logs
-            </Link>
+            {/* LABEL USERNAME (Menggantikan Activity Log) */}
+            <div className="hidden lg:flex flex-col items-end mr-2">
+              <span className="text-[10px] font-black text-[#38040E] uppercase tracking-widest truncate max-w-[150px]">
+                {adminName}
+              </span>
+              <span className="text-[8px] font-bold text-gray-400 uppercase tracking-[0.2em]">Super Admin</span>
+            </div>
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -137,9 +156,17 @@ export default function Navbar() {
                 </motion.button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-64 mt-4 rounded-[2rem] shadow-2xl border-none p-3 bg-white/95 backdrop-blur-md">
-                <DropdownMenuLabel className="font-black text-[10px] uppercase tracking-[0.2em] text-gray-400 px-4 py-4">Admin Panel</DropdownMenuLabel>
+                <DropdownMenuLabel className="font-black text-[10px] uppercase tracking-[0.2em] text-gray-400 px-4 py-4 italic">
+                  Admin: {adminName}
+                </DropdownMenuLabel>
                 <DropdownMenuSeparator className="mx-2 bg-gray-100" />
-                <DropdownMenuItem onClick={handleLogout} className="cursor-pointer py-4 px-4 text-red-600 focus:bg-red-50 focus:text-red-700 font-black rounded-2xl transition-all">
+                
+                {/* Menu Tambahan (Opsional) */}
+                <DropdownMenuItem onClick={() => router.push("/dashboard-admin/activity-logs")} className="cursor-pointer py-3 px-4 font-bold text-[#38040E] rounded-xl transition-all text-[10px] uppercase tracking-widest">
+                  View Activity Logs
+                </DropdownMenuItem>
+                
+                <DropdownMenuItem onClick={handleLogout} className="cursor-pointer py-4 px-4 text-red-600 focus:bg-red-50 focus:text-red-700 font-black rounded-2xl transition-all mt-2">
                   <div className="flex items-center uppercase text-[10px] tracking-widest">
                     <LogOut className="mr-3 h-4 w-4" strokeWidth={3} /> Log Out Admin
                   </div>
